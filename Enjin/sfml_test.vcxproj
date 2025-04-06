@@ -165,10 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bloom.cpp" />
-    <ClCompile Include="Enemy.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="HomingMissile.cpp" />
     <ClCompile Include="HotReloadShader.cpp" />
     <ClCompile Include="Lib.cpp" />
     <ClCompile Include="libs\imgui-sfml\imgui-SFML.cpp" />
@@ -177,20 +174,15 @@
     <ClCompile Include="libs\imgui\imgui_widgets.cpp" />
     <ClCompile Include="app.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="SecondOrderDynamics.cpp" />
     <ClCompile Include="sys.cpp" />
-    <ClCompile Include="TweenEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="app.h" />
     <ClInclude Include="Bloom.hpp" />
     <ClInclude Include="C.hpp" />
     <ClInclude Include="Dice.hpp" />
-    <ClInclude Include="Enemy.h" />
-    <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.hpp" />
-    <ClInclude Include="HomingMissile.h" />
     <ClInclude Include="HotReloadShader.hpp" />
     <ClInclude Include="Interp.hpp" />
     <ClInclude Include="Lib.hpp" />
@@ -199,10 +191,8 @@
     <ClInclude Include="libs\imgui\imgui.h" />
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="ParticleMan.hpp" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="SecondOrderDynamics.h" />
     <ClInclude Include="sys.hpp" />
-    <ClInclude Include="TweenEngine.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
