@@ -22,6 +22,9 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
+
+#include "C.hpp"
+
 extern "C" {
 	// Force the use of the NVidia-graphics card on notebooks with both an IGP and a GPU
 	_declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;

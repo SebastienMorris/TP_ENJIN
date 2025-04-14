@@ -48,11 +48,6 @@ void Game::processInput(sf::Event ev) {
 static double g_time = 0.0;
 static double g_tickTimer = 0.0;
 
-
-void Game::pollInput(double dt) {
-	
-}
-
 static sf::VertexArray va;
 static RenderStates vaRs;
 static std::vector<sf::RectangleShape> rects;
@@ -66,8 +61,6 @@ int blendModeIndex(sf::BlendMode bm) {
 };
 
 void Game::update(double dt) {
-	pollInput(dt);
-
 	g_time += dt;
 	if (bgShader) bgShader->update(dt);
 	

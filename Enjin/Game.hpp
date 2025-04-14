@@ -39,7 +39,6 @@ public:
 	~Game();
 
 	void processInput(sf::Event ev);
-	void pollInput(double dt);
 
 	void update(double dt);
 
