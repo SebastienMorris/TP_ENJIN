@@ -8,6 +8,8 @@
 #include <fstream>
 
 #include "HotReloadShader.hpp"
+#include "CityBuilder/Building.h"
+#include "CityBuilder/Player.h"
 
 
 Game* Game::me = 0;
@@ -29,11 +31,13 @@ Game::Game(sf::RenderWindow * win) {
 	bg.setSize(sf::Vector2f(C::SCREEN_WIDTH, C::SCREEN_HEIGHT));
 
 	bgShader = new HotReloadShader("res/bg.vert", "res/bg.frag");
+
+	player = new Player();
 }
 
 Game::~Game()
 {
-	
+	delete player;
 }
 
 void Game::processInput(sf::Event ev) {
@@ -42,6 +46,8 @@ void Game::processInput(sf::Event ev) {
 		closing = true;
 		return;
 	}
+
+	player->ProcessInput(ev);
 }
 
 
@@ -65,6 +71,12 @@ void Game::update(double dt) {
 	if (bgShader) bgShader->update(dt);
 	
 	beforeParts.update(dt);
+
+	player->Update(dt);
+
+	for(auto b : buildings)
+		b->Update(dt);
+	
 	afterParts.update(dt);
 }
 
@@ -82,12 +94,40 @@ void Game::update(double dt) {
 
 	beforeParts.draw(win);
 
+	for(auto b : buildings)
+		b->Draw(win);
+
 	afterParts.draw(win);
 }
 
 void Game::im()
 {
 	
+}
+
+bool Game::TryPlaceBuilding(int x, int y)
+{
+	for(auto b : buildings)
+		if(b->GetPosition().x == x && b->GetPosition().y == y)
+			return false;
+
+	//Building object creation and add to array
+
+	return true;
+}
+
+bool Game::TryDestroyBuilding(int x, int y)
+{
+	for(auto b : buildings)
+	{
+		if(b->GetPosition().x == x && b->GetPosition().y == y)
+		{
+			//Destroy object and remove from array
+			return true;
+		}
+	}
+
+	return false;
 }
 
 

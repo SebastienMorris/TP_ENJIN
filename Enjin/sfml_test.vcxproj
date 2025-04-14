@@ -242,6 +242,7 @@
     </ClCompile>
     <ClCompile Include="CityBuilder\Factory.cpp" />
     <ClCompile Include="CityBuilder\House.cpp" />
+    <ClCompile Include="CityBuilder\Player.cpp" />
     <ClCompile Include="CityBuilder\PowerPlant.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="HotReloadShader.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="CityBuilder\Building.h" />
     <ClInclude Include="CityBuilder\Factory.h" />
     <ClInclude Include="CityBuilder\House.h" />
+    <ClInclude Include="CityBuilder\Player.h" />
     <ClInclude Include="CityBuilder\PowerPlant.h" />
     <ClInclude Include="Dice.hpp" />
     <ClInclude Include="Game.hpp" />

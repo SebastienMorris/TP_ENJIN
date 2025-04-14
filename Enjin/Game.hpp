@@ -12,11 +12,17 @@
 #include "ParticleMan.hpp"
 
 
+class Building;
 using namespace sf;
 
 class HotReloadShader;
 class Entity;
+
 class Game {
+
+	std::vector<Building*> buildings;
+
+	class Player* player;
 	
 public:
 	
@@ -45,4 +51,8 @@ public:
 	void draw(sf::RenderWindow& win);
 	
 	void im();
+
+
+	bool TryPlaceBuilding(int x, int y);
+	bool TryDestroyBuilding(int x, int y);
 };

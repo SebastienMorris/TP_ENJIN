@@ -3,6 +3,11 @@
 
 namespace sf
 {
+    class Color;
+}
+
+namespace sf
+{
     class RectangleShape;
 }
 
@@ -41,7 +46,7 @@ class Building
     sf::RectangleShape* sprite;
     
 public:
-    Building(sf::Vector2i spawnPos, int size, Material cost, Material production);
+    Building(sf::Vector2i spawnPos, int size, sf::Color colour, Material cost, Material production);
 
     virtual void Update(double dt);
     virtual void Draw(sf::RenderWindow& win);

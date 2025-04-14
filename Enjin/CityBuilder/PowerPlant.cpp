@@ -1,6 +1,8 @@
 ﻿#include "PowerPlant.h"
 
-PowerPlant::PowerPlant(sf::Vector2i spawnPos) : Building(spawnPos, 5, Material(Materials::MONEY, 1), Material(Materials::ELECTRICITY, 1))
+#include <SFML/Graphics/Color.hpp>
+
+PowerPlant::PowerPlant(sf::Vector2i spawnPos) : Building(spawnPos, 5, sf::Color::Yellow, Material(Materials::MONEY, 1), Material(Materials::ELECTRICITY, 1))
 {
 }
 
