@@ -44,16 +44,25 @@ class Building
     Material production;
 
     sf::RectangleShape* sprite;
+
+    
+    bool recurringProduction = false;
+
+    float productionCooldown = 0.0f;
+    float productionTimer = 0.0f;
     
 public:
     Building(sf::Vector2i spawnPos, int size, sf::Color colour, Material cost, Material production);
 
     virtual void Update(double dt);
     virtual void Draw(sf::RenderWindow& win);
+    void Produce();
 
     void SetPostion(int x, int y);
     sf::Vector2i GetPosition();
 
+    void SetProductionState(bool recurring, float cooldown);
+    
 private:
     void SyncPos();
 };

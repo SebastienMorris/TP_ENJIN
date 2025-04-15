@@ -12,6 +12,7 @@
 #include "ParticleMan.hpp"
 
 
+struct Material;
 class Building;
 using namespace sf;
 
@@ -55,4 +56,6 @@ public:
 
 	bool TryPlaceBuilding(int x, int y);
 	bool TryDestroyBuilding(int x, int y);
+
+	void ProduceMaterial(Material& mat);
 };

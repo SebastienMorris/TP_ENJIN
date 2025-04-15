@@ -4,6 +4,7 @@
 
 Factory::Factory(sf::Vector2i spawnPos) : Building(spawnPos, 5, sf::Color::Red, Material(Materials::MONEY, 1), Material(Materials::WOOD, 1))
 {
+    SetProductionState(true, 5.0);
 }
 
 void Factory::Update(double dt)

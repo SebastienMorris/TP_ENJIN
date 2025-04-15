@@ -76,6 +76,8 @@ void Game::update(double dt) {
 
 	for(auto b : buildings)
 		b->Update(dt);
+
+	
 	
 	afterParts.update(dt);
 }
@@ -128,6 +130,24 @@ bool Game::TryDestroyBuilding(int x, int y)
 	}
 
 	return false;
+}
+
+void Game::ProduceMaterial(Material& mat)
+{
+	switch (mat.type)
+	{
+	case Materials::MONEY:
+		player->AddWood(mat.amount);
+		break;
+
+	case Materials::WOOD:
+		player->AddWood(mat.amount);
+		break;
+
+	case Materials::ELECTRICITY:
+		player->AddElectricity(mat.amount);
+		break;
+	}
 }
 
 

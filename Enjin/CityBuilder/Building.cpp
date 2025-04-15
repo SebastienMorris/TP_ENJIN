@@ -4,6 +4,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include "../C.hpp"
+#include "../Game.hpp"
 
 
 Building::Building(sf::Vector2i spawnPos, int size, sf::Color colour, Material cost, Material production) : pos(spawnPos), size(size), cost(cost), production(production)
@@ -16,12 +17,29 @@ Building::Building(sf::Vector2i spawnPos, int size, sf::Color colour, Material c
 
 void Building::Update(double dt)
 {
+    if(recurringProduction)
+    {
+        productionTimer -= dt;
+        if(productionTimer <= 0.0f)
+        {
+            Produce();
+            productionTimer = productionCooldown;
+        }
+    }
+    
     SyncPos();
 }
 
 void Building::Draw(sf::RenderWindow& win)
 {
     win.draw(*sprite);
+}
+
+void Building::Produce()
+{
+    Game* me = Game::me;
+
+    me->ProduceMaterial(production);
 }
 
 void Building::SetPostion(int x, int y)
@@ -33,6 +51,12 @@ void Building::SetPostion(int x, int y)
 sf::Vector2i Building::GetPosition()
 {
     return pos;
+}
+
+void Building::SetProductionState(bool recurring, float cooldown)
+{
+    recurringProduction = recurring;
+    productionCooldown = recurringProduction ? cooldown : 0.0f;
 }
 
 void Building::SyncPos()
