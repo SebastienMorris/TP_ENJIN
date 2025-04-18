@@ -6,7 +6,7 @@
 class PowerPlant : Building
 {
 public:
-    PowerPlant(sf::Vector2i spawnPos);
+    PowerPlant();
 
     void Update(double dt) override;
     void Draw(sf::RenderWindow& win) override;

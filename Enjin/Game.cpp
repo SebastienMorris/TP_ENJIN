@@ -9,6 +9,7 @@
 
 #include "HotReloadShader.hpp"
 #include "CityBuilder/Building.h"
+#include "CityBuilder/House.h"
 #include "CityBuilder/Player.h"
 
 
@@ -107,28 +108,43 @@ void Game::im()
 	
 }
 
-bool Game::TryPlaceBuilding(int x, int y)
+
+bool Game::TryPlaceBuilding(int x, int y, Building* building)
 {
 	for(auto b : buildings)
-		if(b->GetPosition().x == x && b->GetPosition().y == y)
-			return false;
-
-	//Building object creation and add to array
+	{
+		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
+		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		
+		if(xCheck && yCheck) return false;
+	}
+	
+	buildings.push_back(building);
+	building->SetPosition(x, y);
 
 	return true;
 }
 
 bool Game::TryDestroyBuilding(int x, int y)
 {
+	Building* destroyB = nullptr;
 	for(auto b : buildings)
 	{
 		if(b->GetPosition().x == x && b->GetPosition().y == y)
 		{
 			//Destroy object and remove from array
-			return true;
+			destroyB = b;
+			break;
 		}
 	}
 
+	if(destroyB)
+	{
+		auto it = std::find(buildings.begin(), buildings.end(), destroyB);
+		buildings.erase(it);
+		delete destroyB;
+		return true;
+	}
 	return false;
 }
 

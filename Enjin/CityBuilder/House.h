@@ -4,7 +4,7 @@
 class House : Building
 {
 public:
-    House(sf::Vector2i spawnPos);
+    House();
 
     void Update(double dt) override;
     void Draw(sf::RenderWindow& win) override;

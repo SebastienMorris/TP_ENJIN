@@ -11,7 +11,6 @@
 #include "Particle.hpp"
 #include "ParticleMan.hpp"
 
-
 struct Material;
 class Building;
 using namespace sf;
@@ -52,9 +51,9 @@ public:
 	void draw(sf::RenderWindow& win);
 	
 	void im();
-
-
-	bool TryPlaceBuilding(int x, int y);
+	
+	bool TryPlaceBuilding(int x, int y, Building* building);
+	
 	bool TryDestroyBuilding(int x, int y);
 
 	void ProduceMaterial(Material& mat);

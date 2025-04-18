@@ -7,11 +7,11 @@
 #include "../Game.hpp"
 
 
-Building::Building(sf::Vector2i spawnPos, int size, sf::Color colour, Material cost, Material production) : pos(spawnPos), size(size), cost(cost), production(production)
+Building::Building(int size, sf::Color colour, Material cost, Material production) : pos({0,0}), size(size), cost(cost), production(production)
 {
-    sprite = new sf::RectangleShape({C::GRID_SIZE, C::GRID_SIZE * 2.0f});
+    sprite = new sf::RectangleShape({static_cast<float>(C::GRID_SIZE * size), static_cast<float>(C::GRID_SIZE * size)});
     sprite->setFillColor(colour);
-    sprite->setOrigin(C::GRID_SIZE * 0.5f, C::GRID_SIZE * 2.0f);
+    sprite->setOrigin(C::GRID_SIZE * (size / 2.0f), C::GRID_SIZE * (size / 2.0f));
     SyncPos();
 }
 
@@ -42,7 +42,7 @@ void Building::Produce()
     me->ProduceMaterial(production);
 }
 
-void Building::SetPostion(int x, int y)
+void Building::SetPosition(int x, int y)
 {
     pos.x = x;
     pos.y = y;

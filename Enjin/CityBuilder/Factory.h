@@ -6,7 +6,7 @@
 class Factory : Building
 {
 public:
-    Factory(sf::Vector2i spawnPos);
+    Factory();
 
     void Update(double dt) override;
     void Draw(sf::RenderWindow& win) override;

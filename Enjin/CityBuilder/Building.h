@@ -4,15 +4,7 @@
 namespace sf
 {
     class Color;
-}
-
-namespace sf
-{
     class RectangleShape;
-}
-
-namespace sf
-{
     class RenderWindow;
 }
 
@@ -28,10 +20,13 @@ struct Material
     Materials type;
     int amount;
 
-    Material(const Materials t, const int a) : type(t), amount(a)
-    {
-        
-    }
+    Material(const Materials t, const int a) : type(t), amount(a){}
+};
+
+template<typename T> class BuildingType
+{
+public:
+    static T* Allocate() {return new T;} 
 };
 
 class Building
@@ -52,16 +47,18 @@ class Building
     float productionTimer = 0.0f;
     
 public:
-    Building(sf::Vector2i spawnPos, int size, sf::Color colour, Material cost, Material production);
+    Building(int size, sf::Color colour, Material cost, Material production);
 
     virtual void Update(double dt);
     virtual void Draw(sf::RenderWindow& win);
     void Produce();
 
-    void SetPostion(int x, int y);
+    void SetPosition(int x, int y);
     sf::Vector2i GetPosition();
 
     void SetProductionState(bool recurring, float cooldown);
+
+    int GetSize() const {return size;}
     
 private:
     void SyncPos();

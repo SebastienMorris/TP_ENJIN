@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics/Color.hpp>
 
-PowerPlant::PowerPlant(sf::Vector2i spawnPos) : Building(spawnPos, 5, sf::Color::Yellow, Material(Materials::MONEY, 1), Material(Materials::ELECTRICITY, 1))
+PowerPlant::PowerPlant() : Building(5, sf::Color::Yellow, Material(Materials::MONEY, 1), Material(Materials::ELECTRICITY, 1))
 {
     Produce();
 }
