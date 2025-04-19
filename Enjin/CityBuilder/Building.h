@@ -53,13 +53,9 @@ public:
     virtual void Draw(sf::RenderWindow& win);
     void Produce();
 
-    void SetPosition(int x, int y);
-    sf::Vector2i GetPosition();
+    void SetPosition(int x, int y) {pos.x = x; pos.y = y;}
+    sf::Vector2i GetPosition() const {return pos;}
+    int GetSize() const {return size;}
 
     void SetProductionState(bool recurring, float cooldown);
-
-    int GetSize() const {return size;}
-    
-private:
-    void SyncPos();
 };

@@ -11,6 +11,7 @@
 #include "CityBuilder/Building.h"
 #include "CityBuilder/House.h"
 #include "CityBuilder/Player.h"
+#include "CityBuilder/Road.h"
 
 
 Game* Game::me = 0;
@@ -75,10 +76,11 @@ void Game::update(double dt) {
 
 	player->Update(dt);
 
+	for(auto r : roads)
+		r->Update(dt);
+
 	for(auto b : buildings)
 		b->Update(dt);
-
-	
 	
 	afterParts.update(dt);
 }
@@ -99,6 +101,9 @@ void Game::update(double dt) {
 
 	for(auto b : buildings)
 		b->Draw(win);
+
+	for(auto r : roads)
+		r->Draw(win);
 
 	afterParts.draw(win);
 }

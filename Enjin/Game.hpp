@@ -11,6 +11,7 @@
 #include "Particle.hpp"
 #include "ParticleMan.hpp"
 
+class Road;
 struct Material;
 class Building;
 using namespace sf;
@@ -21,6 +22,7 @@ class Entity;
 class Game {
 
 	std::vector<Building*> buildings;
+	std::vector<Road*> roads;
 
 	class Player* player;
 	

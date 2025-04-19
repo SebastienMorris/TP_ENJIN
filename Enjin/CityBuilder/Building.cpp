@@ -12,7 +12,9 @@ Building::Building(int size, sf::Color colour, Material cost, Material productio
     sprite = new sf::RectangleShape({static_cast<float>(C::GRID_SIZE * size), static_cast<float>(C::GRID_SIZE * size)});
     sprite->setFillColor(colour);
     sprite->setOrigin(C::GRID_SIZE * (size / 2.0f), C::GRID_SIZE * (size / 2.0f));
-    SyncPos();
+   
+    sf::Vector2f p = {static_cast<float>(pos.x * C::GRID_SIZE), static_cast<float>(pos.y * C::GRID_SIZE)};
+    sprite->setPosition(p);
 }
 
 void Building::Update(double dt)
@@ -26,8 +28,6 @@ void Building::Update(double dt)
             productionTimer = productionCooldown;
         }
     }
-    
-    SyncPos();
 }
 
 void Building::Draw(sf::RenderWindow& win)
@@ -42,25 +42,8 @@ void Building::Produce()
     me->ProduceMaterial(production);
 }
 
-void Building::SetPosition(int x, int y)
-{
-    pos.x = x;
-    pos.y = y;
-}
-
-sf::Vector2i Building::GetPosition()
-{
-    return pos;
-}
-
 void Building::SetProductionState(bool recurring, float cooldown)
 {
     recurringProduction = recurring;
     productionCooldown = recurringProduction ? cooldown : 0.0f;
-}
-
-void Building::SyncPos()
-{
-    sf::Vector2f p = {static_cast<float>(pos.x * C::GRID_SIZE), static_cast<float>(pos.y * C::GRID_SIZE)};
-    sprite->setPosition(p);
 }
