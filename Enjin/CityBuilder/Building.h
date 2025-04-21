@@ -1,5 +1,8 @@
 ﻿#pragma once
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
+
+#include "../C.hpp"
 
 namespace sf
 {
@@ -53,7 +56,7 @@ public:
     virtual void Draw(sf::RenderWindow& win);
     void Produce();
 
-    void SetPosition(int x, int y) {pos.x = x; pos.y = y;}
+    void SetPosition(int x, int y) {pos.x = x; pos.y = y; sprite->setPosition({(float)(pos.x * C::GRID_SIZE), (float)(pos.y * C::GRID_SIZE)});}
     sf::Vector2i GetPosition() const {return pos;}
     int GetSize() const {return size;}
 

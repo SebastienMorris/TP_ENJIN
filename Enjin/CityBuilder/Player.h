@@ -11,6 +11,11 @@ class Player
     Material* money = new Material(Materials::MONEY, 0);
     Material* wood = new Material(Materials::WOOD, 0);
     Material* electricity = new Material(Materials::ELECTRICITY, 0);
+
+    int nbBuildingTypes = 3;
+    int buildingIndex = 0;
+
+    bool placeRoad = false;
     
 public:
     Player();
@@ -22,4 +27,6 @@ public:
     void AddMoney(int amount);
     void AddWood(int amount);
     void AddElectricity(int amount);
+
+    void Place(int x, int y);
 };
