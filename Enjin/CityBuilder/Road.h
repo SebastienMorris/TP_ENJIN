@@ -6,7 +6,6 @@ namespace sf
     class RectangleShape;
     class RenderWindow;
 }
-}
 
 class Road
 {
