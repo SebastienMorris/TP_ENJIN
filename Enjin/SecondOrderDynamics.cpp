@@ -58,7 +58,8 @@ void SecondOrderDynamics::StopShake()
 
 Vector3<float> SecondOrderDynamics::Calculate(float T, Vector3<float> x, Vector3<float> xd)
 {
-    float k2_stable = std::max({k2, T*T/2 + T*k1/2, T*k1});
+    //float k2_stable = std::max({k2, T*T/2 + T*k1/2, T*k1});
+    float k2_stable = std::max(k2, std::max(T*T/2 + T*k1/2, T*k1));
     //float k2_stable = max(k2, T*T/2 + T*k1/2);
     y += T * yd;
     yd += T * (x + k3*xd - y - k1*yd) / k2_stable;
