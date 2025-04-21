@@ -49,7 +49,7 @@ void Game::processInput(sf::Event ev) {
 		return;
 	}
 
-	player->ProcessInput(ev);
+	player->ProcessInput(ev, *win);
 }
 
 
@@ -113,6 +113,49 @@ void Game::im()
 	
 }
 
+bool Game::TryPlaceRoad(int x, int y)
+{
+	for(auto r : roads)
+	{
+		if(x == r->GetPosition().x && y == r->GetPosition().y) return false;
+	}
+	
+	for(auto b : buildings)
+	{
+		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
+		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		
+		if(xCheck && yCheck) return false;
+	}
+
+	auto newR = new Road({x, y});
+	roads.push_back(newR);
+	return true;
+}
+
+bool Game::TryDestroyRoad(int x, int y)
+{
+	Road* destroyR = nullptr;
+	for(auto r : roads)
+	{
+		if(r->GetPosition().x == x && r->GetPosition().y == y)
+		{
+			//Destroy object and remove from array
+			destroyR = r;
+			break;
+		}
+	}
+
+	if(destroyR)
+	{
+		auto it = std::find(roads.begin(), roads.end(), destroyR);
+		roads.erase(it);
+		delete destroyR;
+		return true;
+	}
+	return false;
+}
+
 
 bool Game::TryPlaceBuilding(int x, int y, Building* building)
 {
@@ -135,7 +178,10 @@ bool Game::TryDestroyBuilding(int x, int y)
 	Building* destroyB = nullptr;
 	for(auto b : buildings)
 	{
-		if(b->GetPosition().x == x && b->GetPosition().y == y)
+		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
+		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		
+		if(xCheck && yCheck)
 		{
 			//Destroy object and remove from array
 			destroyB = b;

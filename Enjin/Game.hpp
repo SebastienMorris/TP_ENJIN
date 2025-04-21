@@ -53,9 +53,11 @@ public:
 	void draw(sf::RenderWindow& win);
 	
 	void im();
+
+	bool TryPlaceRoad(int x, int y);
+	bool TryDestroyRoad(int x, int y);
 	
 	bool TryPlaceBuilding(int x, int y, Building* building);
-	
 	bool TryDestroyBuilding(int x, int y);
 
 	void ProduceMaterial(Material& mat);

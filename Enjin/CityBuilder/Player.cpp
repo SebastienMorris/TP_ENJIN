@@ -18,13 +18,21 @@ Player::~Player()
     delete wood;
 }
 
-void Player::ProcessInput(sf::Event ev)
+void Player::ProcessInput(sf::Event ev, RenderWindow& win)
 {
     Game* g = Game::me; 
     
     if(ev.mouseButton.button == sf::Mouse::Right)
     {
         g->TryPlaceBuilding(ev.mouseButton.x / C::GRID_SIZE, ev.mouseButton.y / C::GRID_SIZE, (Building*)BuildingType<House>::Allocate());
+    }
+
+    if(ev.type == Event::KeyPressed)
+    {
+        if(ev.key.code == sf::Keyboard::Space)
+        {
+            g->TryPlaceRoad(sf::Mouse::getPosition(win).x / C::GRID_SIZE, sf::Mouse::getPosition(win).y / C::GRID_SIZE);
+        }
     }
 }
 

@@ -16,7 +16,7 @@ public:
     Player();
     ~Player();
     
-    void ProcessInput(sf::Event ev);
+    void ProcessInput(sf::Event ev, sf::RenderWindow& win);
     void Update(double dt);
 
     void AddMoney(int amount);
