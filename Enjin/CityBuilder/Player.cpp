@@ -64,6 +64,12 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
 
 void Player::Update(double dt)
 {
+    moraleCheckTimer -= dt;
+    if(moraleCheckTimer <= 0)
+    {
+        CheckMorale();
+        moraleCheckTimer = moraleCheckFrequency;
+    }
 }
 
 void Player::Im()
@@ -71,6 +77,7 @@ void Player::Im()
     if(ImGui::CollapsingHeader("Player"))
     {
         ImGui::Value("Population", population);
+        ImGui::Value("Morale", morale);
         
         ImGui::DragInt("Money", &inventory.at(Materials::MONEY)->amount, 1, 0, 100);
         ImGui::DragInt("Wood", &inventory.at(Materials::WOOD)->amount, 1, 0, 100);
@@ -149,5 +156,18 @@ bool Player::TryCreateBuilding(int x, int y, Building* b)
     
     mat->amount -= cost.amount;
     return true;
+}
+
+void Player::CheckMorale()
+{
+    auto elec = inventory.at(ELECTRICITY);
+    if(elec->amount < 0)
+    {
+        morale -= 0.5f;
+    }
+    else if(morale < 0)
+    {
+        morale += 0.5f;
+    }
 }
 

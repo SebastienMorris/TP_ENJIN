@@ -16,6 +16,10 @@ class Player
         {Materials::ELECTRICITY, new Material(Materials::ELECTRICITY, 10)}
     };
 
+    float morale = 0.0f;
+    float moraleCheckFrequency = 5.0f;
+    float moraleCheckTimer = 0.0f;
+    
     int population = 0;
 
     int nbBuildingTypes = 3;
@@ -39,4 +43,6 @@ public:
 
 private:
     bool TryCreateBuilding(int x, int y, Building* b);
+
+    void CheckMorale();
 };
