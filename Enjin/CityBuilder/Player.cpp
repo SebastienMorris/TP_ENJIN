@@ -4,6 +4,7 @@
 
 #include "Factory.h"
 #include "House.h"
+#include "imgui.h"
 #include "PowerPlant.h"
 #include "../C.hpp"
 #include "../Game.hpp"
@@ -14,8 +15,9 @@ Player::Player()
 
 Player::~Player()
 {
-    delete money;
-    delete wood;
+    delete inventory.at(Materials::MONEY);
+    delete inventory.at(Materials::WOOD);
+    delete inventory.at(Materials::ELECTRICITY);
 }
 
 void Player::ProcessInput(sf::Event ev, RenderWindow& win)
@@ -64,19 +66,32 @@ void Player::Update(double dt)
 {
 }
 
-void Player::AddMoney(int amount)
+void Player::Im()
 {
-    money->amount += amount;
+    if(ImGui::CollapsingHeader("Player"))
+    {
+        ImGui::Value("Population", population);
+        
+        ImGui::DragInt("Money", &inventory.at(Materials::MONEY)->amount, 1, 0, 100);
+        ImGui::DragInt("Wood", &inventory.at(Materials::WOOD)->amount, 1, 0, 100);
+        ImGui::DragInt("Electricity", &inventory.at(Materials::ELECTRICITY)->amount, 1, 0, 100);
+    }
 }
 
-void Player::AddWood(int amount)
+void Player::AddResource(Materials resource, int amount)
 {
-    wood->amount += amount;
+    auto mat = inventory.at(resource);
+
+    if(mat)
+        mat->amount += amount;
 }
 
-void Player::AddElectricity(int amount)
+void Player::AddInhabitants(int amount)
 {
-    electricity->amount += amount;
+    population += amount;
+    auto elec = inventory.at(Materials::ELECTRICITY);
+    if(elec)
+        elec->amount -= amount;
 }
 
 void Player::Place(int x, int y)
@@ -92,16 +107,47 @@ void Player::Place(int x, int y)
     switch (buildingIndex)
     {
     case 0:
-        g->TryPlaceBuilding(x, y, (Building*)BuildingType<House>::Allocate());
+        TryCreateBuilding(x, y, (Building*)BuildingType<House>::Allocate());
         break;
 
     case 1:
-        g->TryPlaceBuilding(x, y, (Building*)BuildingType<Factory>::Allocate());
+        TryCreateBuilding(x, y, (Building*)BuildingType<Factory>::Allocate());
         break;
 
     case 2:
-        g->TryPlaceBuilding(x, y, (Building*)BuildingType<PowerPlant>::Allocate());
+        TryCreateBuilding(x, y, (Building*)BuildingType<PowerPlant>::Allocate());
         break;
     }
+}
+
+bool Player::TryCreateBuilding(int x, int y, Building* b)
+{
+    if(!b) return false;
+
+    Game* g = Game::me;
+    
+    auto cost = b->GetCost();
+    auto mat = inventory.at(cost.type);
+    
+    if(!mat)
+    {
+        delete b;
+        return false;
+    }
+
+    if(mat->amount < cost.amount)
+    {
+        delete b;
+        return false;
+    }
+
+    if(!g->TryPlaceBuilding(x, y, b))
+    {
+        delete b;
+        return false;
+    }
+    
+    mat->amount -= cost.amount;
+    return true;
 }
 

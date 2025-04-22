@@ -1,4 +1,6 @@
 ﻿#pragma once
+#include <unordered_map>
+
 #include "Building.h"
 
 namespace sf
@@ -8,9 +10,13 @@ namespace sf
 
 class Player
 {
-    Material* money = new Material(Materials::MONEY, 0);
-    Material* wood = new Material(Materials::WOOD, 0);
-    Material* electricity = new Material(Materials::ELECTRICITY, 0);
+    std::unordered_map<Materials, Material*> inventory = {
+        {Materials::MONEY, new Material(Materials::MONEY, 10)},
+        {Materials::WOOD, new Material(Materials::WOOD, 10)},
+        {Materials::ELECTRICITY, new Material(Materials::ELECTRICITY, 10)}
+    };
+
+    int population = 0;
 
     int nbBuildingTypes = 3;
     int buildingIndex = 0;
@@ -24,9 +30,13 @@ public:
     void ProcessInput(sf::Event ev, sf::RenderWindow& win);
     void Update(double dt);
 
-    void AddMoney(int amount);
-    void AddWood(int amount);
-    void AddElectricity(int amount);
+    void Im();
+
+    void AddResource(Materials resource, int amount);
+    void AddInhabitants(int amount);
 
     void Place(int x, int y);
+
+private:
+    bool TryCreateBuilding(int x, int y, Building* b);
 };

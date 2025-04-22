@@ -110,7 +110,7 @@ void Game::update(double dt) {
 
 void Game::im()
 {
-	
+	player->Im();
 }
 
 bool Game::TryPlaceRoad(int x, int y)
@@ -201,20 +201,12 @@ bool Game::TryDestroyBuilding(int x, int y)
 
 void Game::ProduceMaterial(Material& mat)
 {
-	switch (mat.type)
-	{
-	case Materials::MONEY:
-		player->AddWood(mat.amount);
-		break;
+	player->AddResource(mat.type, mat.amount);
+}
 
-	case Materials::WOOD:
-		player->AddWood(mat.amount);
-		break;
-
-	case Materials::ELECTRICITY:
-		player->AddElectricity(mat.amount);
-		break;
-	}
+void Game::AddInhabitants(int amount)
+{
+	player->AddInhabitants(amount);
 }
 
 

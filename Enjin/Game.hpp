@@ -61,4 +61,6 @@ public:
 	bool TryDestroyBuilding(int x, int y);
 
 	void ProduceMaterial(Material& mat);
+
+	void AddInhabitants(int amount);
 };

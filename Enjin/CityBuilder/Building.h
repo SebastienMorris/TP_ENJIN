@@ -61,4 +61,6 @@ public:
     int GetSize() const {return size;}
 
     void SetProductionState(bool recurring, float cooldown);
+
+    const Material& GetCost() const{ return cost;}
 };
