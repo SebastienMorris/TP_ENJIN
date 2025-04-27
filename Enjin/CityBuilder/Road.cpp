@@ -11,15 +11,27 @@ Road::Road(sf::Vector2i spawnPos) : pos(spawnPos)
     sprite->setFillColor(sf::Color::White);
     sprite->setOrigin(C::GRID_SIZE * 0.5f, C::GRID_SIZE * 0.5f);
     
-    sf::Vector2f p = {static_cast<float>(pos.x * C::GRID_SIZE), static_cast<float>(pos.y * C::GRID_SIZE)};
-    sprite->setPosition(p);
+    SyncPos();
 }
 
 void Road::Update(double dt)
 {
+    SyncPos();
 }
 
 void Road::Draw(sf::RenderWindow& win)
 {
     win.draw(*sprite);
+}
+
+void Road::Confirm()
+{
+    confirmed = true;
+    SetOutline(false);
+}
+
+void Road::SyncPos()
+{
+    sf::Vector2f p = {static_cast<float>(pos.x * C::GRID_SIZE), static_cast<float>(pos.y * C::GRID_SIZE)};
+    sprite->setPosition(p);
 }

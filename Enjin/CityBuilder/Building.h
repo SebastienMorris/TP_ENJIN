@@ -58,7 +58,7 @@ public:
     virtual void Confirm();
     void Produce();
 
-    void SetPosition(int x, int y) {pos.x = x; pos.y = y; sprite->setPosition({(float)(pos.x * C::GRID_SIZE), (float)(pos.y * C::GRID_SIZE)});}
+    void SetPosition(int x, int y) {pos.x = x; pos.y = y; SyncPos();}
     sf::Vector2i GetPosition() const {return pos;}
     int GetSize() const {return size;}
 

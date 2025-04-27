@@ -42,6 +42,7 @@ void Building::Draw(sf::RenderWindow& win)
 void Building::Confirm()
 {
     confirmed = true;
+    SetOutline(false);
 }
 
 void Building::Produce()

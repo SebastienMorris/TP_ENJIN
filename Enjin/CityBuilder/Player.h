@@ -37,19 +37,21 @@ public:
     
     void ProcessInput(sf::Event ev, sf::RenderWindow& win);
     void Update(double dt);
+    void Draw(sf::RenderWindow& win);
 
     void Im();
 
     void AddResource(Materials resource, int amount);
     void AddInhabitants(int amount);
 
+private:
+    void UpdatePreviews(int x, int y);
+    
     void Place(int x, int y);
 
-    void PlacePreview(int x, int y);
+    void PlaceRoadPreview(int x, int y);
+    void PlaceBuildingPreview(int x, int y, Building* b);
     void ConfirmPlacement(int x, int y);
-
-private:
-    bool TryCreateBuilding(int x, int y, Building* b);
-
+    
     void CheckMorale();
 };

@@ -6,6 +6,7 @@
 #include "House.h"
 #include "imgui.h"
 #include "PowerPlant.h"
+#include "Road.h"
 #include "../C.hpp"
 #include "../Game.hpp"
 
@@ -26,12 +27,12 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
     
     if(ev.type == Event::MouseButtonPressed && ev.mouseButton.button == Mouse::Right)
     {
-        Place(sf::Mouse::getPosition(win).x / C::GRID_SIZE, sf::Mouse::getPosition(win).y / C::GRID_SIZE);
+        Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
     }
 
     if(ev.type == Event::MouseButtonReleased && ev.mouseButton.button == Mouse::Right)
     {
-        
+        ConfirmPlacement(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
     }
 
     if(ev.type == Event::MouseWheelScrolled)
@@ -50,9 +51,14 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
         }   
     }
 
+    if(ev.type == Event::MouseMoved)
+    {
+        UpdatePreviews(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+    }
+
     if(ev.type == Event::KeyPressed)
     {
-        if(ev.key.code == sf::Keyboard::Space)
+        if(ev.key.code == Keyboard::Space)
         {
             placeRoad = true;
         }
@@ -60,7 +66,7 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
 
     if(ev.type == Event::KeyReleased)
     {
-        if(ev.key.code == sf::Keyboard::Space)
+        if(ev.key.code == Keyboard::Space)
         {
             placeRoad = false;
         }
@@ -75,6 +81,15 @@ void Player::Update(double dt)
         CheckMorale();
         moraleCheckTimer = moraleCheckFrequency;
     }
+}
+
+void Player::Draw(sf::RenderWindow& win)
+{
+    if(roadPreview)
+        roadPreview->Draw(win);
+
+    if(buildingPreview)
+        buildingPreview->Draw(win);
 }
 
 void Player::Im()
@@ -106,71 +121,124 @@ void Player::AddInhabitants(int amount)
         elec->amount -= amount;
 }
 
+void Player::UpdatePreviews(int x, int y)
+{
+    Game* g = Game::me;
+    if(roadPreview)
+    {
+        if(roadPreview->GetPosition().x != x || roadPreview->GetPosition().y != y)
+        {
+            roadPreview->SetPosition(x, y);
+            
+            if(g->CheckRoadPlacement(x, y))
+                roadPreview->SetOutlineColour(Color::Green);
+            else
+                roadPreview->SetOutlineColour(Color::Red);
+        }
+    }
+
+    if(buildingPreview)
+    {
+        if(buildingPreview->GetPosition().x != x || buildingPreview->GetPosition().y != y)
+        {
+            buildingPreview->SetPosition(x, y);
+            
+            if(g->CheckBuildingPlacement(x, y, buildingPreview->GetSize()))
+                buildingPreview->SetOutlineColour(Color::Green);
+            else
+                buildingPreview->SetOutlineColour(Color::Red);
+        }
+    }
+}
+
 void Player::Place(int x, int y)
 {
     Game* g = Game::me;
     
     if(placeRoad)
     {
-        //g->TryPlaceRoad(x, y);
+        PlaceRoadPreview(x, y);
         return;
     }
     
     switch (buildingIndex)
     {
     case 0:
-        TryCreateBuilding(x, y, (Building*)BuildingType<House>::Allocate());
+        PlaceBuildingPreview(x, y, (Building*)BuildingType<House>::Allocate());
         break;
 
     case 1:
-        TryCreateBuilding(x, y, (Building*)BuildingType<Factory>::Allocate());
+        PlaceBuildingPreview(x, y, (Building*)BuildingType<Factory>::Allocate());
         break;
 
     case 2:
-        TryCreateBuilding(x, y, (Building*)BuildingType<PowerPlant>::Allocate());
+        PlaceBuildingPreview(x, y, (Building*)BuildingType<PowerPlant>::Allocate());
         break;
     }
 }
 
-void Player::PlacePreview(int x, int y)
+void Player::PlaceRoadPreview(int x, int y)
 {
+    Game* g = Game::me;
+    roadPreview = new Road({x,y});
+        
+    if(g->CheckRoadPlacement(x,y))
+        roadPreview->SetOutlineColour(Color::Green);
+    else
+        roadPreview->SetOutlineColour(Color::Red);
+
+    roadPreview->SetOutline(true);
+}
+
+void Player::PlaceBuildingPreview(int x, int y, Building* b)
+{
+    Game* g = Game::me;
+    buildingPreview = b;
+    buildingPreview->SetPosition(x, y);
     
+    if(g->CheckBuildingPlacement(x, y, buildingPreview->GetSize()))
+        buildingPreview->SetOutlineColour(Color::Green);
+    else
+        buildingPreview->SetOutlineColour(Color::Red);
+
+    buildingPreview->SetOutline(true);
 }
 
 void Player::ConfirmPlacement(int x, int y)
 {
-}
-
-bool Player::TryCreateBuilding(int x, int y, Building* b)
-{
-    if(!b) return false;
-
     Game* g = Game::me;
-    
-    auto cost = b->GetCost();
-    auto mat = inventory.at(cost.type);
-    
-    if(!mat)
-    {
-        delete b;
-        return false;
-    }
 
-    if(mat->amount < cost.amount)
+    if(roadPreview)
     {
-        delete b;
-        return false;
+        if(g->CheckRoadPlacement(x, y))
+        {
+            //Confirm
+            roadPreview->Confirm();
+            g->PlaceRoad(roadPreview);
+            roadPreview = nullptr;
+        }
+        else
+        {
+            delete roadPreview;
+        }
     }
-
-    if(!g->TryPlaceBuilding(x, y, b))
+    if(buildingPreview)
     {
-        delete b;
-        return false;
+        if(g->CheckBuildingPlacement(x, y, buildingPreview->GetSize()))
+        {
+            //Confirm
+            buildingPreview->Confirm();
+            g->PlaceBuilding(buildingPreview);
+            buildingPreview = nullptr;
+        }
+        else
+        {
+            delete buildingPreview;
+        }
     }
-    
-    mat->amount -= cost.amount;
-    return true;
 }
+
+
 
 void Player::CheckMorale()
 {

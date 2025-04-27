@@ -54,10 +54,10 @@ public:
 	
 	void im();
 
-	void PlaceRoad(int x, int y);
+	void PlaceRoad(Road* road);
 	bool TryDestroyRoad(int x, int y);
 	
-	void PlaceBuilding(int x, int y, Building* building);
+	void PlaceBuilding(Building* building);
 	bool TryDestroyBuilding(int x, int y);
 
 	bool CheckRoadPlacement(int x, int y);

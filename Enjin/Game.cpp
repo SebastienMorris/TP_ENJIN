@@ -99,6 +99,8 @@ void Game::update(double dt) {
 
 	beforeParts.draw(win);
 
+	player->Draw(win);
+
 	for(auto b : buildings)
 		b->Draw(win);
 
@@ -113,10 +115,11 @@ void Game::im()
 	player->Im();
 }
 
-void Game::PlaceRoad(int x, int y)
+void Game::PlaceRoad(Road* road)
 {
-	auto newR = new Road({x, y});
-	roads.push_back(newR);
+	if(!road) return;
+	
+	roads.push_back(road);
 }
 
 bool Game::TryDestroyRoad(int x, int y)
@@ -143,12 +146,11 @@ bool Game::TryDestroyRoad(int x, int y)
 }
 
 
-void Game::PlaceBuilding(int x, int y, Building* building)
+void Game::PlaceBuilding(Building* building)
 {
 	if(!building) return;
 	
 	buildings.push_back(building);
-	building->SetPosition(x, y);
 }
 
 bool Game::TryDestroyBuilding(int x, int y)
