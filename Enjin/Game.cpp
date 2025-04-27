@@ -113,24 +113,10 @@ void Game::im()
 	player->Im();
 }
 
-bool Game::TryPlaceRoad(int x, int y)
+void Game::PlaceRoad(int x, int y)
 {
-	for(auto r : roads)
-	{
-		if(x == r->GetPosition().x && y == r->GetPosition().y) return false;
-	}
-	
-	for(auto b : buildings)
-	{
-		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
-		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
-		
-		if(xCheck && yCheck) return false;
-	}
-
 	auto newR = new Road({x, y});
 	roads.push_back(newR);
-	return true;
 }
 
 bool Game::TryDestroyRoad(int x, int y)
@@ -157,20 +143,12 @@ bool Game::TryDestroyRoad(int x, int y)
 }
 
 
-bool Game::TryPlaceBuilding(int x, int y, Building* building)
+void Game::PlaceBuilding(int x, int y, Building* building)
 {
-	for(auto b : buildings)
-	{
-		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
-		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
-		
-		if(xCheck && yCheck) return false;
-	}
+	if(!building) return;
 	
 	buildings.push_back(building);
 	building->SetPosition(x, y);
-
-	return true;
 }
 
 bool Game::TryDestroyBuilding(int x, int y)
@@ -197,6 +175,36 @@ bool Game::TryDestroyBuilding(int x, int y)
 		return true;
 	}
 	return false;
+}
+
+bool Game::CheckRoadPlacement(int x, int y)
+{
+	for(auto r : roads)
+	{
+		if(x == r->GetPosition().x && y == r->GetPosition().y) return false;
+	}
+	
+	for(auto b : buildings)
+	{
+		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
+		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		
+		if(xCheck && yCheck) return false;
+	}
+	return true;
+}
+
+bool Game::CheckBuildingPlacement(int x, int y, int size)
+{
+	for(auto b : buildings)
+	{
+		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
+		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		
+		if(xCheck && yCheck) return false;
+	}
+
+	return true;
 }
 
 void Game::ProduceMaterial(Material& mat)

@@ -43,7 +43,7 @@ class Building
 
     sf::RectangleShape* sprite;
 
-    
+    bool confirmed = false;
     bool recurringProduction = false;
 
     float productionCooldown = 0.0f;
@@ -54,6 +54,8 @@ public:
 
     virtual void Update(double dt);
     virtual void Draw(sf::RenderWindow& win);
+
+    virtual void Confirm();
     void Produce();
 
     void SetPosition(int x, int y) {pos.x = x; pos.y = y; sprite->setPosition({(float)(pos.x * C::GRID_SIZE), (float)(pos.y * C::GRID_SIZE)});}
@@ -63,4 +65,10 @@ public:
     void SetProductionState(bool recurring, float cooldown);
 
     const Material& GetCost() const{ return cost;}
+    
+    void SetOutlineColour(sf::Color colour) const {sprite->setOutlineColor(colour);}
+    void SetOutline(bool show) const {sprite->setOutlineThickness(show ? 2 : 0);}
+
+private:
+    void SyncPos();
 };

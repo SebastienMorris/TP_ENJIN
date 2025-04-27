@@ -3,6 +3,7 @@
 
 #include "Building.h"
 
+class Road;
 namespace sf
 {
     class Event;
@@ -26,6 +27,9 @@ class Player
     int buildingIndex = 0;
 
     bool placeRoad = false;
+
+    Road* roadPreview;
+    Building* buildingPreview;
     
 public:
     Player();
@@ -40,6 +44,9 @@ public:
     void AddInhabitants(int amount);
 
     void Place(int x, int y);
+
+    void PlacePreview(int x, int y);
+    void ConfirmPlacement(int x, int y);
 
 private:
     bool TryCreateBuilding(int x, int y, Building* b);

@@ -29,6 +29,11 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
         Place(sf::Mouse::getPosition(win).x / C::GRID_SIZE, sf::Mouse::getPosition(win).y / C::GRID_SIZE);
     }
 
+    if(ev.type == Event::MouseButtonReleased && ev.mouseButton.button == Mouse::Right)
+    {
+        
+    }
+
     if(ev.type == Event::MouseWheelScrolled)
     {
         if(ev.mouseWheelScroll.delta > 0)
@@ -107,7 +112,7 @@ void Player::Place(int x, int y)
     
     if(placeRoad)
     {
-        g->TryPlaceRoad(x, y);
+        //g->TryPlaceRoad(x, y);
         return;
     }
     
@@ -125,6 +130,15 @@ void Player::Place(int x, int y)
         TryCreateBuilding(x, y, (Building*)BuildingType<PowerPlant>::Allocate());
         break;
     }
+}
+
+void Player::PlacePreview(int x, int y)
+{
+    
+}
+
+void Player::ConfirmPlacement(int x, int y)
+{
 }
 
 bool Player::TryCreateBuilding(int x, int y, Building* b)

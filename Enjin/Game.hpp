@@ -54,11 +54,14 @@ public:
 	
 	void im();
 
-	bool TryPlaceRoad(int x, int y);
+	void PlaceRoad(int x, int y);
 	bool TryDestroyRoad(int x, int y);
 	
-	bool TryPlaceBuilding(int x, int y, Building* building);
+	void PlaceBuilding(int x, int y, Building* building);
 	bool TryDestroyBuilding(int x, int y);
+
+	bool CheckRoadPlacement(int x, int y);
+	bool CheckBuildingPlacement(int x, int y, int size);
 
 	void ProduceMaterial(Material& mat);
 

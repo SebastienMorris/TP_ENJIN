@@ -13,26 +13,35 @@ Building::Building(int size, sf::Color colour, Material cost, Material productio
     sprite->setFillColor(colour);
     sprite->setOrigin(C::GRID_SIZE * (size / 2.0f), C::GRID_SIZE * (size / 2.0f));
    
-    sf::Vector2f p = {static_cast<float>(pos.x * C::GRID_SIZE), static_cast<float>(pos.y * C::GRID_SIZE)};
-    sprite->setPosition(p);
+    SyncPos();
 }
 
 void Building::Update(double dt)
 {
-    if(recurringProduction)
+    if(confirmed)
     {
-        productionTimer -= dt;
-        if(productionTimer <= 0.0f)
+        if(recurringProduction)
         {
-            Produce();
-            productionTimer = productionCooldown;
+            productionTimer -= dt;
+            if(productionTimer <= 0.0f)
+            {
+                Produce();
+                productionTimer = productionCooldown;
+            }
         }
     }
+    
+    SyncPos();
 }
 
 void Building::Draw(sf::RenderWindow& win)
 {
     win.draw(*sprite);
+}
+
+void Building::Confirm()
+{
+    confirmed = true;
 }
 
 void Building::Produce()
@@ -46,4 +55,10 @@ void Building::SetProductionState(bool recurring, float cooldown)
 {
     recurringProduction = recurring;
     productionCooldown = recurringProduction ? cooldown : 0.0f;
+}
+
+void Building::SyncPos()
+{
+    sf::Vector2f p = {static_cast<float>(pos.x * C::GRID_SIZE), static_cast<float>(pos.y * C::GRID_SIZE)};
+    sprite->setPosition(p);
 }
