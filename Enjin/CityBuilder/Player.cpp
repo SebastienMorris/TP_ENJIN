@@ -220,6 +220,7 @@ void Player::ConfirmPlacement(int x, int y)
         else
         {
             delete roadPreview;
+            roadPreview = nullptr;
         }
     }
     if(buildingPreview)
@@ -234,6 +235,7 @@ void Player::ConfirmPlacement(int x, int y)
         else
         {
             delete buildingPreview;
+            buildingPreview = nullptr;
         }
     }
 }
