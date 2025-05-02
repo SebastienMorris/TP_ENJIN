@@ -24,10 +24,8 @@ class Player
     
     int population = 0;
 
-    int nbBuildingTypes = 3;
+    int nbBuildingTypes = 4;
     int buildingIndex = 0;
-
-    bool placeRoad = false;
 
     Road* roadPreview;
     Building* buildingPreview;

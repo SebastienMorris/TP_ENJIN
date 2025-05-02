@@ -43,10 +43,13 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
             if(buildingIndex >= nbBuildingTypes)
                 buildingIndex = 0;
 
-            if(buildingPreview)
+            if(buildingPreview || roadPreview)
             {
                 delete buildingPreview;
                 buildingPreview = nullptr;
+                delete roadPreview;
+                roadPreview = nullptr;
+                
                 Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
             }
                 
@@ -57,10 +60,13 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
             if(buildingIndex < 0)
                 buildingIndex = nbBuildingTypes - 1;
 
-            if(buildingPreview)
+            if(buildingPreview || roadPreview)
             {
                 delete buildingPreview;
                 buildingPreview = nullptr;
+                delete roadPreview;
+                roadPreview = nullptr;
+                
                 Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
             }
         }   
@@ -69,22 +75,6 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
     if(ev.type == Event::MouseMoved)
     {
         UpdatePreviews(Mouse::getPosition(win).x, Mouse::getPosition(win).y);
-    }
-
-    if(ev.type == Event::KeyPressed)
-    {
-        if(ev.key.code == Keyboard::Space)
-        {
-            placeRoad = true;
-        }
-    }
-
-    if(ev.type == Event::KeyReleased)
-    {
-        if(ev.key.code == Keyboard::Space)
-        {
-            placeRoad = false;
-        }
     }
 }
 
@@ -228,12 +218,6 @@ void Player::Place(int x, int y)
 {
     Game* g = Game::me;
     
-    if(placeRoad)
-    {
-        PlaceRoadPreview(x, y);
-        return;
-    }
-    
     switch (buildingIndex)
     {
     case 0:
@@ -246,6 +230,10 @@ void Player::Place(int x, int y)
 
     case 2:
         PlaceBuildingPreview(x, y, (Building*)BuildingType<PowerPlant>::Allocate());
+        break;
+
+    case 3:
+        PlaceRoadPreview(x, y);
         break;
     }
 }
