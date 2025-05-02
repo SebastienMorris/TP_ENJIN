@@ -188,8 +188,8 @@ bool Game::CheckRoadPlacement(int x, int y)
 	
 	for(auto b : buildings)
 	{
-		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
-		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		bool xCheck = x <= b->GetPosition().x + (b->GetSize() + 1) / 2 - 1 && x >= b->GetPosition().x - (b->GetSize() + 1) / 2 + 1;
+		bool yCheck = y <= b->GetPosition().y + (b->GetSize() + 1) / 2 - 1 && y >= b->GetPosition().y - (b->GetSize() + 1) / 2 + 1;
 		
 		if(xCheck && yCheck) return false;
 	}
