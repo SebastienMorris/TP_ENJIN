@@ -200,10 +200,12 @@ bool Game::CheckBuildingPlacement(int x, int y, int size)
 {
 	for(auto b : buildings)
 	{
-		bool xCheck = x <= b->GetPosition().x + b->GetSize() && x >= b->GetPosition().x - b->GetSize();
-		bool yCheck = y <= b->GetPosition().y + b->GetSize() && y >= b->GetPosition().y - b->GetSize();
+		bool xCheckR = x + (size - 1) / 2 <= b->GetPosition().x + (b->GetSize() - 1) / 2 + 1 && x + (size - 1) / 2 >= b->GetPosition().x - (b->GetSize() - 1) / 2 - 1;
+		bool xCheckL = x - (size - 1) / 2 <= b->GetPosition().x + (b->GetSize() - 1) / 2 + 1 && x - (size - 1) / 2 >= b->GetPosition().x - (b->GetSize() - 1) / 2 - 1;
+		bool yCheckR = y + (size - 1) / 2 <= b->GetPosition().y + (b->GetSize() - 1) / 2 + 1 && y + (size - 1) / 2 >= b->GetPosition().y - (b->GetSize() - 1) / 2 - 1;
+		bool yCheckL = y - (size - 1) / 2 <= b->GetPosition().y + (b->GetSize() - 1) / 2 + 1 && y - (size - 1) / 2 >= b->GetPosition().y - (b->GetSize() - 1) / 2 - 1;
 		
-		if(xCheck && yCheck) return false;
+		if((xCheckR || xCheckL) && (yCheckR || yCheckL)) return false;
 	}
 
 	return true;

@@ -32,7 +32,7 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
 
     if(ev.type == Event::MouseButtonReleased && ev.mouseButton.button == Mouse::Right)
     {
-        ConfirmPlacement(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+        ConfirmPlacement();
     }
 
     if(ev.type == Event::MouseWheelScrolled)
@@ -42,18 +42,33 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
             buildingIndex++;
             if(buildingIndex >= nbBuildingTypes)
                 buildingIndex = 0;
+
+            if(buildingPreview)
+            {
+                delete buildingPreview;
+                buildingPreview = nullptr;
+                Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+            }
+                
         }
         else if(ev.mouseWheelScroll.delta < 0)
         {
             buildingIndex--;
             if(buildingIndex < 0)
                 buildingIndex = nbBuildingTypes - 1;
+
+            if(buildingPreview)
+            {
+                delete buildingPreview;
+                buildingPreview = nullptr;
+                Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+            }
         }   
     }
 
     if(ev.type == Event::MouseMoved)
     {
-        UpdatePreviews(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+        UpdatePreviews(Mouse::getPosition(win).x, Mouse::getPosition(win).y);
     }
 
     if(ev.type == Event::KeyPressed)
@@ -121,9 +136,12 @@ void Player::AddInhabitants(int amount)
         elec->amount -= amount;
 }
 
-void Player::UpdatePreviews(int x, int y)
+void Player::UpdatePreviews(int mouseX, int mouseY)
 {
     Game* g = Game::me;
+    int x = mouseX / C::GRID_SIZE;
+    int y = mouseY / C::GRID_SIZE;
+    
     if(roadPreview)
     {
         if(roadPreview->GetPosition().x != x || roadPreview->GetPosition().y != y)
@@ -140,15 +158,70 @@ void Player::UpdatePreviews(int x, int y)
     if(buildingPreview)
     {
         if(buildingPreview->GetPosition().x != x || buildingPreview->GetPosition().y != y)
-        {
-            buildingPreview->SetPosition(x, y);
+        { 
+            Vector2i placePos = {x, y};
+
+            if(!g->CheckBuildingPlacement(placePos.x, placePos.y, buildingPreview->GetSize()))
+            {
+                placePos = TrySnapBuilding(mouseX, mouseY, buildingPreview);
+            }
+
+            if(placePos.x < 0 && placePos.y < 0) return;
             
-            if(g->CheckBuildingPlacement(x, y, buildingPreview->GetSize()))
+            if(g->CheckBuildingPlacement(placePos.x, placePos.y, buildingPreview->GetSize()))
+            {
                 buildingPreview->SetOutlineColour(Color::Green);
+            }
             else
+            {
                 buildingPreview->SetOutlineColour(Color::Red);
+            }
+            
+            buildingPreview->SetPosition(placePos.x, placePos.y);
         }
     }
+}
+
+Vector2i Player::TrySnapBuilding(int mouseX, int mouseY, Building* building)
+{
+    Game* g = Game::me;
+    int x = mouseX / C::GRID_SIZE;
+    int y = mouseY / C::GRID_SIZE;
+
+    float rx = (float)mouseX / C::GRID_SIZE - x;
+    float ry = (float)mouseY / C::GRID_SIZE - y;
+    
+    bool right = g->CheckBuildingPlacement(x + 1, y, building->GetSize());
+    bool left = g->CheckBuildingPlacement(x - 1, y, building->GetSize());
+    bool up = g->CheckBuildingPlacement(x, y - 1, building->GetSize());
+    bool down = g->CheckBuildingPlacement(x, y + 1, building->GetSize());
+
+    if(!right && !left && !up && !down)
+        return {-1, -1}; 
+
+    buildingSnapSlots[0].z = rx * (right ? 1.0f : -1.0f);
+    buildingSnapSlots[1].z = (1 - rx) * (left ? 1.0f : -1.0f);
+    buildingSnapSlots[2].z = (1 - ry) * (up ? 1.0f : -1.0f);
+    buildingSnapSlots[3].z = ry * (down ? 1.0f : -1.0f);
+
+    Vector3f snapSlot = buildingSnapSlots[0];
+    for(auto slot : buildingSnapSlots)
+    {
+        if(slot.z >= 0 && slot.z > snapSlot.z)
+        {
+            snapSlot = slot;
+        }
+    }
+
+    printf("\n");
+
+    if(snapSlot.z >= 0)
+    {
+        x += (int)snapSlot.x;
+        y += (int)snapSlot.y;
+    }
+
+    return {x, y};
 }
 
 void Player::Place(int x, int y)
@@ -204,13 +277,13 @@ void Player::PlaceBuildingPreview(int x, int y, Building* b)
     buildingPreview->SetOutline(true);
 }
 
-void Player::ConfirmPlacement(int x, int y)
+void Player::ConfirmPlacement()
 {
     Game* g = Game::me;
 
     if(roadPreview)
     {
-        if(g->CheckRoadPlacement(x, y))
+        if(g->CheckRoadPlacement(roadPreview->GetPosition().x, roadPreview->GetPosition().y))
         {
             //Confirm
             roadPreview->Confirm();
@@ -225,7 +298,7 @@ void Player::ConfirmPlacement(int x, int y)
     }
     if(buildingPreview)
     {
-        if(g->CheckBuildingPlacement(x, y, buildingPreview->GetSize()))
+        if(g->CheckBuildingPlacement(buildingPreview->GetPosition().x, buildingPreview->GetPosition().y, buildingPreview->GetSize()))
         {
             //Confirm
             buildingPreview->Confirm();

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <unordered_map>
+#include <SFML/System/Vector3.hpp>
 
 #include "Building.h"
 
@@ -30,6 +31,13 @@ class Player
 
     Road* roadPreview;
     Building* buildingPreview;
+
+    sf::Vector3f buildingSnapSlots[4] = {
+        {1, 0, 0.0f},
+        {-1, 0, 0.0f},
+        {0, -1, 0.0f},
+        {0, 1, 0.0f},
+    };
     
 public:
     Player();
@@ -46,12 +54,13 @@ public:
 
 private:
     void UpdatePreviews(int x, int y);
+    sf::Vector2i TrySnapBuilding(int mouseX, int mouseY, Building* building);
     
     void Place(int x, int y);
 
     void PlaceRoadPreview(int x, int y);
     void PlaceBuildingPreview(int x, int y, Building* b);
-    void ConfirmPlacement(int x, int y);
+    void ConfirmPlacement();
     
     void CheckMorale();
 };
