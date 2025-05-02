@@ -99,13 +99,13 @@ void Game::update(double dt) {
 
 	beforeParts.draw(win);
 
-	player->Draw(win);
-
 	for(auto b : buildings)
 		b->Draw(win);
 
 	for(auto r : roads)
 		r->Draw(win);
+
+	player->Draw(win);
 
 	afterParts.draw(win);
 }
@@ -207,7 +207,6 @@ bool Game::CheckBuildingPlacement(int x, int y, int size)
 		
 		if((xCheckR || xCheckL) && (yCheckR || yCheckL)) return false;
 	}
-
 	return true;
 }
 
