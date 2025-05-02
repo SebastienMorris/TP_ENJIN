@@ -27,7 +27,7 @@ class Player
     int nbBuildingTypes = 4;
     int buildingIndex = 0;
 
-    Road* roadPreview;
+    std::vector<Road*> roadPreviews;
     Building* buildingPreview;
 
     sf::Vector3f buildingSnapSlots[4] = {
@@ -53,6 +53,7 @@ public:
 private:
     void UpdatePreviews(int x, int y);
     sf::Vector2i TrySnapBuilding(int mouseX, int mouseY, Building* building);
+    //sf::Vector2i TrySnapRoad(int mouseX, int mouseY, Building* );
     
     void Place(int x, int y);
 

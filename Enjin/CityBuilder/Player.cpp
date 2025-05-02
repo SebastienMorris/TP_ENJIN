@@ -43,12 +43,15 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
             if(buildingIndex >= nbBuildingTypes)
                 buildingIndex = 0;
 
-            if(buildingPreview || roadPreview)
+            if(buildingPreview || !roadPreviews.empty())
             {
                 delete buildingPreview;
                 buildingPreview = nullptr;
-                delete roadPreview;
-                roadPreview = nullptr;
+
+                for(auto r : roadPreviews)
+                    delete r;
+
+                roadPreviews.clear();
                 
                 Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
             }
@@ -60,12 +63,15 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
             if(buildingIndex < 0)
                 buildingIndex = nbBuildingTypes - 1;
 
-            if(buildingPreview || roadPreview)
+            if(buildingPreview || !roadPreviews.empty())
             {
                 delete buildingPreview;
                 buildingPreview = nullptr;
-                delete roadPreview;
-                roadPreview = nullptr;
+
+                for(auto r : roadPreviews)
+                    delete r;
+
+                roadPreviews.clear();
                 
                 Place(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
             }
@@ -90,8 +96,8 @@ void Player::Update(double dt)
 
 void Player::Draw(sf::RenderWindow& win)
 {
-    if(roadPreview)
-        roadPreview->Draw(win);
+    for(auto r : roadPreviews)
+        r->Draw(win);
 
     if(buildingPreview)
         buildingPreview->Draw(win);
@@ -132,16 +138,37 @@ void Player::UpdatePreviews(int mouseX, int mouseY)
     int x = mouseX / C::GRID_SIZE;
     int y = mouseY / C::GRID_SIZE;
     
-    if(roadPreview)
+    if(!roadPreviews.empty())
     {
-        if(roadPreview->GetPosition().x != x || roadPreview->GetPosition().y != y)
+        for(auto r : roadPreviews)
         {
-            roadPreview->SetPosition(x, y);
-            
-            if(g->CheckRoadPlacement(x, y))
-                roadPreview->SetOutlineColour(Color::Green);
-            else
-                roadPreview->SetOutlineColour(Color::Red);
+            if(r->GetPosition().x == x && r->GetPosition().y == y)
+                return;
+        }
+        
+        if(roadPreviews.back()->GetPosition().x != x || roadPreviews.back()->GetPosition().y != y)
+        {
+            //roadPreview->SetPosition(x, y);
+            auto road= new Road({x, y});
+            roadPreviews.push_back(road);
+            road->SetOutline(true);
+
+            bool setRed = false;
+            for(int i=0; i<roadPreviews.size(); i++)
+            {
+                if(setRed)
+                    roadPreviews[i]->SetOutlineColour(Color::Red);
+                else
+                {
+                    roadPreviews[i]->SetOutlineColour(Color::Green);
+
+                    if(!g->CheckRoadPlacement(roadPreviews[i]->GetPosition().x, roadPreviews[i]->GetPosition().y))
+                    {
+                        setRed = true;
+                        i = -1;
+                    }
+                }
+            }
         }
     }
 
@@ -241,14 +268,15 @@ void Player::Place(int x, int y)
 void Player::PlaceRoadPreview(int x, int y)
 {
     Game* g = Game::me;
-    roadPreview = new Road({x,y});
+    auto r = new Road({x, y});
+    roadPreviews.push_back(r);
         
     if(g->CheckRoadPlacement(x,y))
-        roadPreview->SetOutlineColour(Color::Green);
+        r->SetOutlineColour(Color::Green);
     else
-        roadPreview->SetOutlineColour(Color::Red);
+        r->SetOutlineColour(Color::Red);
 
-    roadPreview->SetOutline(true);
+    r->SetOutline(true);
 }
 
 void Player::PlaceBuildingPreview(int x, int y, Building* b)
@@ -269,19 +297,34 @@ void Player::ConfirmPlacement()
 {
     Game* g = Game::me;
 
-    if(roadPreview)
+    if(!roadPreviews.empty())
     {
-        if(g->CheckRoadPlacement(roadPreview->GetPosition().x, roadPreview->GetPosition().y))
+        bool confirm = true;
+        for(auto r : roadPreviews)
+        {
+            if(!g->CheckRoadPlacement(r->GetPosition().x, r->GetPosition().y))
+            {
+                confirm = false;
+                break;
+            }
+        }
+            
+        if(confirm)
         {
             //Confirm
-            roadPreview->Confirm();
-            g->PlaceRoad(roadPreview);
-            roadPreview = nullptr;
+            for(auto r : roadPreviews)
+            {
+                r->Confirm();
+                g->PlaceRoad(r);
+            }
+            roadPreviews.clear();
         }
         else
         {
-            delete roadPreview;
-            roadPreview = nullptr;
+            for(auto r : roadPreviews)
+                delete r;
+
+            roadPreviews.clear();
         }
     }
     if(buildingPreview)
