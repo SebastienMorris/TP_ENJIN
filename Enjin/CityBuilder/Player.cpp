@@ -137,39 +137,108 @@ void Player::UpdatePreviews(int mouseX, int mouseY)
     Game* g = Game::me;
     int x = mouseX / C::GRID_SIZE;
     int y = mouseY / C::GRID_SIZE;
+
+    float rx = (float)mouseX / C::GRID_SIZE - x;
+    float ry = (float)mouseY / C::GRID_SIZE - y;
     
     if(!roadPreviews.empty())
     {
-        for(auto r : roadPreviews)
+        if(roadPreviews.size() == 1)
+        {
+            if(roadPreviews.back()->GetPosition().x != x && roadPreviews.back()->GetPosition().y != y)
+            {
+                if(rx >= ry)
+                {
+                    roadPreviewHorizontal = true;
+                }
+                else
+                {
+                    roadPreviewHorizontal = false;
+                }
+            }
+            else if(roadPreviews.back()->GetPosition().x != x)
+            {
+                roadPreviewHorizontal = true;
+            }
+            else if(roadPreviews.back()->GetPosition().y != y)
+            {
+                roadPreviewHorizontal = false;
+            }
+        }
+        
+        /*for(auto r : roadPreviews)
         {
             if(r->GetPosition().x == x && r->GetPosition().y == y)
                 return;
-        }
-        
-        if(roadPreviews.back()->GetPosition().x != x || roadPreviews.back()->GetPosition().y != y)
+        }*/
+        if(roadPreviewHorizontal)
         {
-            //roadPreview->SetPosition(x, y);
-            auto road= new Road({x, y});
-            roadPreviews.push_back(road);
-            road->SetOutline(true);
-
-            bool setRed = false;
-            for(int i=0; i<roadPreviews.size(); i++)
+            printf(std::to_string(roadPreviews.back()->GetPosition().x).c_str());
+            printf(" / ");
+            printf(std::to_string(x).c_str());
+            printf(" / ");
+            if(roadPreviews.back()->GetPosition().x != x)
             {
-                if(setRed)
-                    roadPreviews[i]->SetOutlineColour(Color::Red);
+                printf("yes");
+                int dir = x - roadPreviews[0]->GetPosition().x;
+
+                if(roadPreviews.back()->GetPosition().x < x)
+                {
+                    if(dir > 0)
+                    {
+                        AddPreviewRoad(x, roadPreviews.back()->GetPosition().y);
+                    }
+                    else
+                    {
+                        RemovePreviewRoad(x, roadPreviews.back()->GetPosition().y);
+                    }
+                }
                 else
                 {
-                    roadPreviews[i]->SetOutlineColour(Color::Green);
-
-                    if(!g->CheckRoadPlacement(roadPreviews[i]->GetPosition().x, roadPreviews[i]->GetPosition().y))
+                    if(dir < 0)
                     {
-                        setRed = true;
-                        i = -1;
+                        AddPreviewRoad(x, roadPreviews.back()->GetPosition().y);
+                    }
+                    else
+                    {
+                        RemovePreviewRoad(x, roadPreviews.back()->GetPosition().y);
+                    }
+                }
+            }
+            
+            printf("\n");
+        }
+        else
+        {
+            if(roadPreviews.back()->GetPosition().y != y)
+            {
+                int dir = y - roadPreviews[0]->GetPosition().y;
+
+                if(roadPreviews.back()->GetPosition().y < y)
+                {
+                    if(dir > 0)
+                    {
+                        AddPreviewRoad(roadPreviews.back()->GetPosition().x, y);
+                    }
+                    else
+                    {
+                        RemovePreviewRoad(roadPreviews.back()->GetPosition().x, y);
+                    }
+                }
+                else
+                {
+                    if(dir < 0)
+                    {
+                        AddPreviewRoad(roadPreviews.back()->GetPosition().x, y);
+                    }
+                    else
+                    {
+                        RemovePreviewRoad(roadPreviews.back()->GetPosition().x, y);
                     }
                 }
             }
         }
+        
     }
 
     if(buildingPreview)
@@ -344,6 +413,91 @@ void Player::ConfirmPlacement()
     }
 }
 
+void Player::AddPreviewRoad(int x, int y)
+{
+    Game* g = Game::me;
+    
+    /*int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
+    int increment = amountNewR >= 0 ? 1 : -1;
+    amountNewR *= amountNewR >= 0 ? 1 : -1;
+
+    printf(std::to_string(amountNewR).c_str());
+
+    for(int i = amountNewR; i > 0; i--)
+    {
+        if(roadPreviewHorizontal)
+        {
+            auto road= new Road({x - (i * increment), y});
+            roadPreviews.push_back(road);
+            road->SetOutline(true);
+        }
+        else
+        {
+            auto road= new Road({x, y - (i * increment)});
+            roadPreviews.push_back(road);
+            road->SetOutline(true);
+        }
+    }*/
+
+    auto road= new Road({x, y});
+    roadPreviews.push_back(road);
+    road->SetOutline(true);
+
+    bool setRed = false;
+    for(int i=0; i<roadPreviews.size(); i++)
+    {
+        if(setRed)
+            roadPreviews[i]->SetOutlineColour(Color::Red);
+        else
+        {
+            roadPreviews[i]->SetOutlineColour(Color::Green);
+
+            if(!g->CheckRoadPlacement(roadPreviews[i]->GetPosition().x, roadPreviews[i]->GetPosition().y))
+            {
+                setRed = true;
+                i = -1;
+            }
+        }
+    }
+}
+
+void Player::RemovePreviewRoad(int x, int y)
+{
+    Game* g = Game::me;
+
+    /*int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
+    int increment = amountNewR >= 0 ? 1 : -1;
+    amountNewR *= amountNewR >= 0 ? 1 : -1;
+
+    for(int i = amountNewR; i > 0; i--)
+    {
+        if(roadPreviews.size() > 1)
+        {
+            delete roadPreviews.back();
+            roadPreviews.pop_back();
+        }
+    }*/
+
+    delete roadPreviews.back();
+    roadPreviews.pop_back();
+    
+    bool setRed = false;
+    for(int i=0; i<roadPreviews.size(); i++)
+    {
+        if(setRed)
+            roadPreviews[i]->SetOutlineColour(Color::Red);
+        else
+        {
+            roadPreviews[i]->SetOutlineColour(Color::Green);
+
+            if(!g->CheckRoadPlacement(roadPreviews[i]->GetPosition().x, roadPreviews[i]->GetPosition().y))
+            {
+                setRed = true;
+                i = -1;
+            }
+        }
+    }
+}
 
 
 void Player::CheckMorale()

@@ -36,6 +36,8 @@ class Player
         {0, -1, 0.0f},
         {0, 1, 0.0f},
     };
+
+    bool roadPreviewHorizontal = true;
     
 public:
     Player();
@@ -60,6 +62,9 @@ private:
     void PlaceRoadPreview(int x, int y);
     void PlaceBuildingPreview(int x, int y, Building* b);
     void ConfirmPlacement();
+
+    void AddPreviewRoad(int x, int y);
+    void RemovePreviewRoad(int x, int y);
     
     void CheckMorale();
 };
