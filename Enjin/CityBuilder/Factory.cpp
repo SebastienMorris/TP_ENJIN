@@ -4,7 +4,7 @@
 
 Factory::Factory() : Building(5, sf::Color::Black, Material(Materials::MONEY, 1), Material(Materials::WOOD, 1))
 {
-    SetProductionState(true, 5.0);
+    //SetProductionState(true, 5.0);
 }
 
 void Factory::Update(double dt)
@@ -15,4 +15,10 @@ void Factory::Update(double dt)
 void Factory::Draw(sf::RenderWindow& win)
 {
     Building::Draw(win);
+}
+
+void Factory::Confirm()
+{
+    Building::Confirm();
+    
 }

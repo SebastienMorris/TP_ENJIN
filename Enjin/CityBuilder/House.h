@@ -8,4 +8,5 @@ public:
 
     void Update(double dt) override;
     void Draw(sf::RenderWindow& win) override;
+    void Confirm() override;
 };
