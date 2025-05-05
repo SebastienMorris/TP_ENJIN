@@ -69,6 +69,8 @@ private:
 
     void AddPreviewRoad(int x, int y);
     void RemovePreviewRoad(int x, int y);
+
+    bool IsRoad(int x, int y);
     
     void CheckMorale();
 };

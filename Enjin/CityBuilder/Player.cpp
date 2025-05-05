@@ -178,13 +178,8 @@ void Player::UpdatePreviews(int mouseX, int mouseY)
         }*/
         if(roadPreviewHorizontal)
         {
-            printf(std::to_string(roadPreviews.back()->GetPosition().x).c_str());
-            printf(" / ");
-            printf(std::to_string(x).c_str());
-            printf(" / ");
             if(roadPreviews.back()->GetPosition().x != x)
             {
-                printf("yes");
                 int dir = x - roadPreviews[0]->GetPosition().x;
 
                 if(roadPreviews.back()->GetPosition().x < x)
@@ -210,8 +205,6 @@ void Player::UpdatePreviews(int mouseX, int mouseY)
                     }
                 }
             }
-            
-            printf("\n");
         }
         else
         {
@@ -303,8 +296,6 @@ Vector2i Player::TrySnapBuilding(int mouseX, int mouseY, Building* building)
             snapSlot = slot;
         }
     }
-
-    printf("\n");
 
     if(snapSlot.z >= 0)
     {
@@ -438,33 +429,32 @@ void Player::AddPreviewRoad(int x, int y)
 {
     Game* g = Game::me;
     
-    /*int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
+    int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
     int increment = amountNewR >= 0 ? 1 : -1;
-    /*amountNewR *= amountNewR >= 0 ? 1 : -1;
+    amountNewR *= amountNewR >= 0 ? 1 : -1;
 
-    printf(std::to_string(amountNewR).c_str());
-
-    for(int i = amountNewR; i > 0; i--)
+    for(int i = amountNewR - 1; i >= 0; i--)
     {
         if(roadPreviewHorizontal)
         {
-            auto road= new Road({x - (i * increment), y});
-            roadPreviews.push_back(road);
-            road->SetOutline(true);
+            if(!IsRoad(x - (i * increment), y))
+            {
+                auto road= new Road({x - (i * increment), y});
+                roadPreviews.push_back(road);
+                road->SetOutline(true);
+            }
         }
         else
         {
-            auto road= new Road({x, y - (i * increment)});
-            roadPreviews.push_back(road);
-            road->SetOutline(true);
+            if(!IsRoad(x, y - (i * increment)))
+            {
+                auto road= new Road({x, y - (i * increment)});
+                roadPreviews.push_back(road);
+                road->SetOutline(true);
+            }
         }
-    }*/
+    }
 
-    
-
-    auto road= new Road({x, y});
-    roadPreviews.push_back(road);
-    road->SetOutline(true);
 
     bool setRed = false;
     for(int i=0; i<roadPreviews.size(); i++)
@@ -488,21 +478,29 @@ void Player::RemovePreviewRoad(int x, int y)
 {
     Game* g = Game::me;
 
-    /*int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
+    int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
     int increment = amountNewR >= 0 ? 1 : -1;
     amountNewR *= amountNewR >= 0 ? 1 : -1;
 
-    for(int i = amountNewR; i > 0; i--)
+    for(int i = amountNewR - 1; i >= 0; i--)
     {
-        if(roadPreviews.size() > 1)
+        if(roadPreviewHorizontal)
         {
-            delete roadPreviews.back();
-            roadPreviews.pop_back();
+            if(IsRoad(x - (i * increment), y))
+            {
+                delete roadPreviews.back();
+                roadPreviews.pop_back();
+            }
         }
-    }*/
-
-    delete roadPreviews.back();
-    roadPreviews.pop_back();
+        else
+        {
+            if(IsRoad(x, y - (i * increment)))
+            {
+                delete roadPreviews.back();
+                roadPreviews.pop_back();
+            }
+        }
+    }
     
     bool setRed = false;
     for(int i=0; i<roadPreviews.size(); i++)
@@ -522,13 +520,27 @@ void Player::RemovePreviewRoad(int x, int y)
     }
 }
 
+bool Player::IsRoad(int x, int y)
+{   
+    if(roadPreviews.empty()) return false;
+
+    if(x == roadPreviews[0]->GetPosition().x && y == roadPreviews[0]->GetPosition().y) return true;
+
+    for(int i=1; i<roadPreviews.size(); i++)
+    {
+        if(roadPreviews[i]->GetPosition().x == x && roadPreviews[i]->GetPosition().y == y) return true;
+    }
+
+    return false;
+}
+
 
 void Player::CheckMorale()
 {
     auto elec = inventory.at(ELECTRICITY);
     if(elec->amount < 0)
-        morale = clamp(morale - 2.5f, 0.0f, 100.0f);
+        morale = std::clamp(morale - 2.5f, 0.0f, 100.0f);
     else
-        morale = clamp(morale + 2.5f, 0.0f, 100.0f);
+        morale = std::clamp(morale + 2.5f, 0.0f, 100.0f);
 }
 
