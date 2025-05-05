@@ -38,7 +38,8 @@ class Building
     
     int size;
     
-    Material cost;
+    Material costCreation;
+    Material costProduction;
     Material production;
 
     sf::RectangleShape* sprite;
@@ -50,13 +51,14 @@ class Building
     float productionTimer = 0.0f;
     
 public:
-    Building(int size, sf::Color colour, Material cost, Material production);
+    Building(int size, sf::Color colour, Material costCreation, Material costProduction, Material production);
 
     virtual void Update(double dt);
     virtual void Draw(sf::RenderWindow& win);
 
     virtual void Confirm();
     void Produce();
+    void CostProduce();
 
     void SetPosition(int x, int y) {pos.x = x; pos.y = y; SyncPos();}
     sf::Vector2i GetPosition() const {return pos;}
@@ -64,8 +66,10 @@ public:
 
     void SetProductionState(bool recurring, float cooldown);
 
-    const Material& GetCost() const{ return cost;}
-    
+    const Material& GetCostConstruction() const{ return costCreation;}
+    const Material& GetCostProduce() const{ return costProduction;}
+
+    sf::Color GetOutlineColour() const {return sprite->getOutlineColor();}
     void SetOutlineColour(sf::Color colour) const {sprite->setOutlineColor(colour);}
     void SetOutline(bool show) const {sprite->setOutlineThickness(show ? 2 : 0);}
 

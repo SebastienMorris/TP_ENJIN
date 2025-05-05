@@ -2,8 +2,9 @@
 
 #include <SFML/Graphics/Color.hpp>
 
-PowerPlant::PowerPlant() : Building(5, sf::Color::Yellow, Material(Materials::MONEY, 1), Material(Materials::ELECTRICITY, 5))
+PowerPlant::PowerPlant() : Building(5, sf::Color::Yellow, Material(Materials::MONEY, 10), Material(Materials::ELECTRICITY, 0), Material(Materials::ELECTRICITY, 3))
 {
+    SetProductionState(true, 5.0f);
 }
 
 void PowerPlant::Update(double dt)

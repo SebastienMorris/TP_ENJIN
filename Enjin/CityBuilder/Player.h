@@ -49,6 +49,7 @@ public:
 
     void Im();
 
+    void ProcessCost(Materials resource, int amount);
     void AddResource(Materials resource, int amount);
     void AddInhabitants(int amount);
 
@@ -59,6 +60,7 @@ private:
     
     void Place(int x, int y);
 
+    bool CheckCanPlace(int x, int y, Building* b);
     void PlaceRoadPreview(int x, int y);
     void PlaceBuildingPreview(int x, int y, Building* b);
     void ConfirmPlacement();

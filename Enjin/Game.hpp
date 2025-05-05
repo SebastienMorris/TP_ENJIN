@@ -58,12 +58,14 @@ public:
 	bool TryDestroyRoad(int x, int y);
 	
 	void PlaceBuilding(Building* building);
+	
 	bool TryDestroyBuilding(int x, int y);
 
 	bool CheckRoadPlacement(int x, int y);
 	bool CheckBuildingPlacement(int x, int y, int size);
 
 	void ProduceMaterial(Material& mat);
+	
 
 	void AddInhabitants(int amount);
 };
