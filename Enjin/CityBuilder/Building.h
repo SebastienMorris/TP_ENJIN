@@ -2,8 +2,6 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 
-#include "../C.hpp"
-
 namespace sf
 {
     class Color;

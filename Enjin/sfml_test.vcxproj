@@ -80,13 +80,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);"C:\Users\markm\Downloads\tmxlite-master\tmxlite-master\tmxlite\x64\bin\DebugStatic"</IncludePath>
+    <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);"C:\Users\markm\Downloads\tmxlite-master\tmxlite-master\tmxlite\x64\bin\DebugStatic"</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
+    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);"C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\include"</IncludePath>
+    <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);"C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\lib"</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -136,7 +136,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;sfml-main-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-graphics-s-d.lib;sfml-audio-s-d.lib;openal32.lib;ogg.lib;freetype.lib;flac.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;sfml-main-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;sfml-graphics-s-d.lib;sfml-audio-s-d.lib;openal32.lib;ogg.lib;freetype.lib;flac.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;libtmxlite-s-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -160,7 +160,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;sfml-main.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-graphics-s.lib;sfml-audio-s.lib;openal32.lib;ogg.lib;freetype.lib;flac.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;sfml-main.lib;sfml-window-s.lib;sfml-system-s.lib;sfml-graphics-s.lib;sfml-audio-s.lib;openal32.lib;ogg.lib;freetype.lib;flac.lib;vorbis.lib;vorbisenc.lib;vorbisfile.lib;winmm.lib;libtmxlite-s.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -240,6 +240,7 @@
       <SDLCheck>true</SDLCheck>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="CityBuilder\Environment.cpp" />
     <ClCompile Include="CityBuilder\Factory.cpp" />
     <ClCompile Include="CityBuilder\House.cpp" />
     <ClCompile Include="CityBuilder\Player.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Bloom.hpp" />
     <ClInclude Include="C.hpp" />
     <ClInclude Include="CityBuilder\Building.h" />
+    <ClInclude Include="CityBuilder\Environment.hpp" />
     <ClInclude Include="CityBuilder\Factory.h" />
     <ClInclude Include="CityBuilder\House.h" />
     <ClInclude Include="CityBuilder\Player.h" />
@@ -278,6 +280,7 @@
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="ParticleMan.hpp" />
     <ClInclude Include="SecondOrderDynamics.h" />
+    <ClInclude Include="SFMLOrthogonalLayer.hpp" />
     <ClInclude Include="sys.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

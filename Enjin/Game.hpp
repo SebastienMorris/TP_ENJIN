@@ -1,14 +1,9 @@
 #pragma once
 
-#include <vector>
-
 #include "SFML/Graphics.hpp"
-#include "SFML/System.hpp"
 #include "SFML/Window.hpp"
 
 #include "sys.hpp"
-
-#include "Particle.hpp"
 #include "ParticleMan.hpp"
 
 class Road;
@@ -17,7 +12,6 @@ class Building;
 using namespace sf;
 
 class HotReloadShader;
-class Entity;
 
 class Game {
 
@@ -25,6 +19,8 @@ class Game {
 	std::vector<Road*> roads;
 
 	class Player* player;
+
+	class Environment* map;
 	
 public:
 	

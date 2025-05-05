@@ -1,15 +1,10 @@
 
-#include <imgui.h>
-#include <array>
-
 #include "C.hpp"
 #include "Game.hpp"
 
-#include <fstream>
-
 #include "HotReloadShader.hpp"
 #include "CityBuilder/Building.h"
-#include "CityBuilder/House.h"
+#include "CityBuilder/Environment.hpp"
 #include "CityBuilder/Player.h"
 #include "CityBuilder/Road.h"
 
@@ -25,10 +20,12 @@ Game::Game(sf::RenderWindow * win) {
 	me = this;
 	bg = sf::RectangleShape(Vector2f((float)win->getSize().x, (float)win->getSize().y));
 
-	bool isOk = tex.loadFromFile("res/bg_stars.png");
+	map = new Environment(win); 
+
+	/*bool isOk = tex.loadFromFile("res/bg_stars.png");
 	if (!isOk) {
 		printf("ERR : LOAD FAILED\n");
-	}
+	}*/
 	bg.setTexture(&tex);
 	bg.setSize(sf::Vector2f(C::SCREEN_WIDTH, C::SCREEN_HEIGHT));
 
@@ -98,6 +95,8 @@ void Game::update(double dt) {
 	win.draw(bg, states);
 
 	beforeParts.draw(win);
+
+	map->drawCamera(win);
 
 	for(auto b : buildings)
 		b->Draw(win);
@@ -181,6 +180,8 @@ bool Game::TryDestroyBuilding(int x, int y)
 
 bool Game::CheckRoadPlacement(int x, int y)
 {
+	if(map->isWater(x, y)) return false;
+	
 	for(auto r : roads)
 	{
 		if(x == r->GetPosition().x && y == r->GetPosition().y) return false;
@@ -198,6 +199,8 @@ bool Game::CheckRoadPlacement(int x, int y)
 
 bool Game::CheckBuildingPlacement(int x, int y, int size)
 {
+	if(map->isWater(x, y, size)) return false;
+	
 	for(auto b : buildings)
 	{
 		bool xCheckR = x + (size - 1) / 2 <= b->GetPosition().x + (b->GetSize() - 1) / 2 + 1 && x + (size - 1) / 2 >= b->GetPosition().x - (b->GetSize() - 1) / 2 - 1;

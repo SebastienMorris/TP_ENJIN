@@ -419,7 +419,7 @@ void Player::AddPreviewRoad(int x, int y)
     
     /*int amountNewR = roadPreviewHorizontal ? x - roadPreviews.back()->GetPosition().x : y - roadPreviews.back()->GetPosition().y;
     int increment = amountNewR >= 0 ? 1 : -1;
-    amountNewR *= amountNewR >= 0 ? 1 : -1;
+    /*amountNewR *= amountNewR >= 0 ? 1 : -1;
 
     printf(std::to_string(amountNewR).c_str());
 
@@ -438,6 +438,8 @@ void Player::AddPreviewRoad(int x, int y)
             road->SetOutline(true);
         }
     }*/
+
+    
 
     auto road= new Road({x, y});
     roadPreviews.push_back(road);
