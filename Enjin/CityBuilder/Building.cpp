@@ -49,7 +49,7 @@ void Building::Confirm()
 void Building::Produce()
 {
     Game* me = Game::me;
-
+    
     me->ProduceMaterial(production);
 }
 

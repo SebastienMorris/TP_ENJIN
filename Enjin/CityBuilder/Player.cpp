@@ -345,9 +345,10 @@ bool Player::CheckCanPlace(int x, int y, Building* b)
     auto mat = inventory.at(b->GetCostConstruction().type);
 
     if(mat && (mat->amount - b->GetCostConstruction().amount < 0))
-    {
         return false;
-    }
+
+    if (!g->CheckRoadAround(x, y, buildingPreview->GetSize()))
+        return false;
     
     return g->CheckBuildingPlacement(x, y, buildingPreview->GetSize());
 }
@@ -524,12 +525,8 @@ void Player::CheckMorale()
 {
     auto elec = inventory.at(ELECTRICITY);
     if(elec->amount < 0)
-    {
-        morale -= 0.5f;
-    }
-    else if(morale < 0)
-    {
-        morale += 0.5f;
-    }
+        morale = clamp(morale - 2.5f, 0.0f, 100.0f);
+    else
+        morale = clamp(morale + 2.5f, 0.0f, 100.0f);
 }
 
