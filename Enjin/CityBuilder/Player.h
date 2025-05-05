@@ -18,7 +18,7 @@ class Player
         {Materials::ELECTRICITY, new Material(Materials::ELECTRICITY, 10)}
     };
 
-    float morale = 0.0f;
+    float morale = 100.0f;
     float moraleCheckFrequency = 5.0f;
     float moraleCheckTimer = 0.0f;
     
@@ -49,8 +49,11 @@ public:
 
     void Im();
 
+    void ProcessCost(Materials resource, int amount);
     void AddResource(Materials resource, int amount);
     void AddInhabitants(int amount);
+
+    float GetMorale() { return morale; };
 
 private:
     void UpdatePreviews(int x, int y);
@@ -59,6 +62,7 @@ private:
     
     void Place(int x, int y);
 
+    bool CheckCanPlace(int x, int y, Building* b);
     void PlaceRoadPreview(int x, int y);
     void PlaceBuildingPreview(int x, int y, Building* b);
     void ConfirmPlacement();

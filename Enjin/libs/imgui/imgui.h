@@ -1867,7 +1867,7 @@ struct ImGuiStorage
 // If you are submitting lots of evenly spaced items and you have a random access to the list, you can perform coarse
 // clipping based on visibility to save yourself from processing those items at all.
 // The clipper calculates the range of visible items and advance the cursor to compensate for the non-visible items we have skipped.
-// (Dear ImGui already clip items based on their bounds but it needs to measure text size to do so, whereas manual coarse clipping before submission makes this cost and your own data fetching/submission cost almost null)
+// (Dear ImGui already clip items based on their bounds but it needs to measure text size to do so, whereas manual coarse clipping before submission makes this costCreation and your own data fetching/submission costCreation almost null)
 // Usage:
 //   ImGuiListClipper clipper;
 //   clipper.Begin(1000);         // We have 1000 elements, evenly spaced.
@@ -2424,7 +2424,7 @@ struct ImFont
     bool                        DirtyLookupTables;  // 1     // out //
     float                       Scale;              // 4     // in  // = 1.f      // Base font scale, multiplied by the per-window font scale which you can adjust with SetWindowFontScale()
     float                       Ascent, Descent;    // 4+4   // out //            // Ascent: distance from top to bottom of e.g. 'A' [0..FontSize]
-    int                         MetricsTotalSurface;// 4     // out //            // Total surface in pixels to get an idea of the font rasterization/texture cost (not exact, we approximate the cost of padding between glyphs)
+    int                         MetricsTotalSurface;// 4     // out //            // Total surface in pixels to get an idea of the font rasterization/texture costCreation (not exact, we approximate the costCreation of padding between glyphs)
     ImU8                        Used4kPagesMap[(IM_UNICODE_CODEPOINT_MAX+1)/4096/8]; // 2 bytes if ImWchar=ImWchar16, 34 bytes if ImWchar==ImWchar32. Store 1-bit for each block of 4K codepoints that has one active glyph. This is mainly used to facilitate iterations across all used codepoints.
 
     // Methods

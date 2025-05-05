@@ -197,6 +197,20 @@ bool Game::CheckRoadPlacement(int x, int y)
 	return true;
 }
 
+bool Game::CheckRoadAround(int x, int y, int size)
+{
+	for(auto r : roads)
+	{
+		bool xCheckR = x + (size - 1) / 2 <= r->GetPosition().x + 1 && x + (size - 1) / 2 >= r->GetPosition().x - 1;
+		bool xCheckL = x - (size - 1) / 2 <= r->GetPosition().x + 1 && x - (size - 1) / 2 >= r->GetPosition().x - 1;
+		bool yCheckR = y + (size - 1) / 2 <= r->GetPosition().y + 1 && y + (size - 1) / 2 >= r->GetPosition().y - 1;
+		bool yCheckL = y - (size - 1) / 2 <= r->GetPosition().y + 1 && y - (size - 1) / 2 >= r->GetPosition().y - 1;
+		
+		if((xCheckR || xCheckL) && (yCheckR || yCheckL)) return true;
+	}
+	return false;
+}
+
 bool Game::CheckBuildingPlacement(int x, int y, int size)
 {
 	if(map->isWater(x, y, size)) return false;
@@ -215,7 +229,8 @@ bool Game::CheckBuildingPlacement(int x, int y, int size)
 
 void Game::ProduceMaterial(Material& mat)
 {
-	player->AddResource(mat.type, mat.amount);
+	int newAmout = player->GetMorale() < 0 ? mat.amount / 2 :  mat.amount;
+	player->AddResource(mat.type, newAmout);
 }
 
 void Game::AddInhabitants(int amount)

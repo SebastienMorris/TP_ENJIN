@@ -7,7 +7,7 @@
 #include "../Game.hpp"
 
 
-Building::Building(int size, sf::Color colour, Material cost, Material production) : pos({0,0}), size(size), cost(cost), production(production)
+Building::Building(int size, sf::Color colour, Material costCreation,  Material costProduction, Material production) : pos({0,0}), size(size), costCreation(costCreation), costProduction(costProduction), production(production)
 {
     sprite = new sf::RectangleShape({static_cast<float>(C::GRID_SIZE * size), static_cast<float>(C::GRID_SIZE * size)});
     sprite->setFillColor(colour);
@@ -26,6 +26,7 @@ void Building::Update(double dt)
             if(productionTimer <= 0.0f)
             {
                 Produce();
+                CostProduce();
                 productionTimer = productionCooldown;
             }
         }
@@ -48,8 +49,17 @@ void Building::Confirm()
 void Building::Produce()
 {
     Game* me = Game::me;
-
+    
     me->ProduceMaterial(production);
+}
+
+void Building::CostProduce()
+{
+    Game* me = Game::me;
+
+    Material newCost = costProduction;
+    newCost.amount = -costProduction.amount;
+    me->ProduceMaterial(newCost);
 }
 
 void Building::SetProductionState(bool recurring, float cooldown)

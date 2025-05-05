@@ -116,6 +116,11 @@ void Player::Im()
     }
 }
 
+void Player::ProcessCost(Materials resource, int amount)
+{
+    AddResource(resource, -amount);
+}
+
 void Player::AddResource(Materials resource, int amount)
 {
     auto mat = inventory.at(resource);
@@ -254,7 +259,7 @@ void Player::UpdatePreviews(int mouseX, int mouseY)
 
             if(placePos.x < 0 && placePos.y < 0) return;
             
-            if(g->CheckBuildingPlacement(placePos.x, placePos.y, buildingPreview->GetSize()))
+            if(CheckCanPlace(x, y, buildingPreview))
             {
                 buildingPreview->SetOutlineColour(Color::Green);
             }
@@ -334,6 +339,20 @@ void Player::Place(int x, int y)
     }
 }
 
+bool Player::CheckCanPlace(int x, int y, Building* b)
+{
+    Game* g = Game::me;
+    auto mat = inventory.at(b->GetCostConstruction().type);
+
+    if(mat && (mat->amount - b->GetCostConstruction().amount < 0))
+        return false;
+
+    if (!g->CheckRoadAround(x, y, buildingPreview->GetSize()))
+        return false;
+    
+    return g->CheckBuildingPlacement(x, y, buildingPreview->GetSize());
+}
+
 void Player::PlaceRoadPreview(int x, int y)
 {
     Game* g = Game::me;
@@ -350,11 +369,12 @@ void Player::PlaceRoadPreview(int x, int y)
 
 void Player::PlaceBuildingPreview(int x, int y, Building* b)
 {
-    Game* g = Game::me;
     buildingPreview = b;
     buildingPreview->SetPosition(x, y);
-    
-    if(g->CheckBuildingPlacement(x, y, buildingPreview->GetSize()))
+
+    auto mat = inventory.at(buildingPreview->GetCostConstruction().type);
+
+    if (CheckCanPlace(x, y, b))
         buildingPreview->SetOutlineColour(Color::Green);
     else
         buildingPreview->SetOutlineColour(Color::Red);
@@ -365,7 +385,7 @@ void Player::PlaceBuildingPreview(int x, int y, Building* b)
 void Player::ConfirmPlacement()
 {
     Game* g = Game::me;
-
+    
     if(!roadPreviews.empty())
     {
         bool confirm = true;
@@ -398,9 +418,10 @@ void Player::ConfirmPlacement()
     }
     if(buildingPreview)
     {
-        if(g->CheckBuildingPlacement(buildingPreview->GetPosition().x, buildingPreview->GetPosition().y, buildingPreview->GetSize()))
+        if(buildingPreview->GetOutlineColour() == sf::Color::Green)
         {
             //Confirm
+            ProcessCost(buildingPreview->GetCostConstruction().type, buildingPreview->GetCostConstruction().amount);
             buildingPreview->Confirm();
             g->PlaceBuilding(buildingPreview);
             buildingPreview = nullptr;
@@ -506,12 +527,8 @@ void Player::CheckMorale()
 {
     auto elec = inventory.at(ELECTRICITY);
     if(elec->amount < 0)
-    {
-        morale -= 0.5f;
-    }
-    else if(morale < 0)
-    {
-        morale += 0.5f;
-    }
+        morale = clamp(morale - 2.5f, 0.0f, 100.0f);
+    else
+        morale = clamp(morale + 2.5f, 0.0f, 100.0f);
 }
 
