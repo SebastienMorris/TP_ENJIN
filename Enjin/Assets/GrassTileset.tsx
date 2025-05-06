@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="GrassTileset" tilewidth="16" tileheight="16" tilecount="21" columns="7">
- <image source="../../../../../Downloads/Grass.png" width="112" height="48"/>
+ <image source="./Grass.png" width="112" height="48"/>
  <tile id="0" type="Grass"/>
  <tile id="1" type="Grass"/>
  <tile id="2" type="Grass"/>

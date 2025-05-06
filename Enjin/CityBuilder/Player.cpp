@@ -35,6 +35,12 @@ void Player::ProcessInput(sf::Event ev, RenderWindow& win)
         ConfirmPlacement();
     }
 
+    if(ev.type == Event::MouseButtonPressed && ev.mouseButton.button == Mouse::Left)
+    {
+        g->TryDestroyBuilding(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+        g->TryDestroyRoad(Mouse::getPosition(win).x / C::GRID_SIZE, Mouse::getPosition(win).y / C::GRID_SIZE);
+    }
+
     if(ev.type == Event::MouseWheelScrolled)
     {
         if(ev.mouseWheelScroll.delta > 0)
@@ -170,12 +176,6 @@ void Player::UpdatePreviews(int mouseX, int mouseY)
                 roadPreviewHorizontal = false;
             }
         }
-        
-        /*for(auto r : roadPreviews)
-        {
-            if(r->GetPosition().x == x && r->GetPosition().y == y)
-                return;
-        }*/
         if(roadPreviewHorizontal)
         {
             if(roadPreviews.back()->GetPosition().x != x)
@@ -338,10 +338,10 @@ bool Player::CheckCanPlace(int x, int y, Building* b)
     if(mat && (mat->amount - b->GetCostConstruction().amount < 0))
         return false;
 
-    if (!g->CheckRoadAround(x, y, buildingPreview->GetSize()))
+    if (!g->CheckRoadAround(buildingPreview->GetPosition().x, buildingPreview->GetPosition().y, buildingPreview->GetSize()))
         return false;
     
-    return g->CheckBuildingPlacement(x, y, buildingPreview->GetSize());
+    return g->CheckBuildingPlacement(buildingPreview->GetPosition().x, buildingPreview->GetPosition().y, buildingPreview->GetSize());
 }
 
 void Player::PlaceRoadPreview(int x, int y)

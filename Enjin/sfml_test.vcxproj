@@ -80,12 +80,12 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);"C:\Users\markm\Downloads\tmxlite-master\tmxlite-master\tmxlite\x64\bin\DebugStatic"</IncludePath>
-    <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);"C:\Users\markm\Downloads\tmxlite-master\tmxlite-master\tmxlite\x64\bin\DebugStatic"</LibraryPath>
+    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);"C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\include"</IncludePath>
+    <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);"C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\include"</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);"C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\include"</IncludePath>
+    <IncludePath>libs\eastl\test\packages\EABase\include\Common;libs\eastl\include;libs\imgui;libs\imgui-sfml;libs\SFML-2.5.1\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\include</IncludePath>
     <LibraryPath>libs\SFML-2.5.1\lib;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);"C:\Users\markm\Documents\CNAM ENJMIN\Master\Prog\ENJIN\TP_ENJIN\Enjin\libs\tmxlite-1.4.4\lib"</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -145,7 +145,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CONSOLE;SFML_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>
       </AdditionalIncludeDirectories>
@@ -165,81 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bloom.cpp" />
-    <ClCompile Include="CityBuilder\Building.cpp">
-      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
-      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
-      <Optimization>Disabled</Optimization>
-      <SupportJustMyCode>true</SupportJustMyCode>
-      <AssemblerOutput>NoListing</AssemblerOutput>
-      <AssemblerListingLocation>sfml_test\x64\Debug\</AssemblerListingLocation>
-      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
-      <BrowseInformation>false</BrowseInformation>
-      <BrowseInformationFile>sfml_test\x64\Debug\</BrowseInformationFile>
-      <CompileAs>Default</CompileAs>
-      <ConformanceMode>true</ConformanceMode>
-      <DiagnosticsFormat>Column</DiagnosticsFormat>
-      <DisableLanguageExtensions>false</DisableLanguageExtensions>
-      <ErrorReporting>Prompt</ErrorReporting>
-      <ExpandAttributedSource>false</ExpandAttributedSource>
-      <ExceptionHandling>Sync</ExceptionHandling>
-      <EnableASAN>false</EnableASAN>
-      <EnableFuzzer>false</EnableFuzzer>
-      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
-      <EnableVectorLength>NotSet</EnableVectorLength>
-      <FloatingPointModel>Precise</FloatingPointModel>
-      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
-      <GenerateModuleDependencies>false</GenerateModuleDependencies>
-      <GenerateSourceDependencies>false</GenerateSourceDependencies>
-      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
-      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
-      <IntrinsicFunctions>false</IntrinsicFunctions>
-      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>Default</LanguageStandard_C>
-      <MinimalRebuild>false</MinimalRebuild>
-      <ModuleDependenciesFile>sfml_test\x64\Debug\</ModuleDependenciesFile>
-      <ModuleOutputFile>sfml_test\x64\Debug\</ModuleOutputFile>
-      <OmitDefaultLibName>false</OmitDefaultLibName>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
-      <ObjectFileName>sfml_test\x64\Debug\</ObjectFileName>
-      <CallingConvention>Cdecl</CallingConvention>
-      <ProgramDataBaseFileName>sfml_test\x64\Debug\vc143.pdb</ProgramDataBaseFileName>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>sfml_test\x64\Debug\sfml_test.pch</PrecompiledHeaderOutputFile>
-      <PreprocessToFile>false</PreprocessToFile>
-      <PreprocessKeepComments>false</PreprocessKeepComments>
-      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
-      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
-      <ShowIncludes>false</ShowIncludes>
-      <SourceDependenciesFile>sfml_test\x64\Debug\</SourceDependenciesFile>
-      <SuppressStartupBanner>true</SuppressStartupBanner>
-      <BufferSecurityCheck>true</BufferSecurityCheck>
-      <SmallerTypeCheck>false</SmallerTypeCheck>
-      <SpectreMitigation>false</SpectreMitigation>
-      <StructMemberAlignment>Default</StructMemberAlignment>
-      <TrackerLogDirectory>sfml_test\x64\Debug\sfml_test.tlog\</TrackerLogDirectory>
-      <TranslateIncludes>false</TranslateIncludes>
-      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
-      <TreatWarningAsError>false</TreatWarningAsError>
-      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <UseFullPaths>true</UseFullPaths>
-      <WarningLevel>Level3</WarningLevel>
-      <XMLDocumentationFileName>sfml_test\x64\Debug\</XMLDocumentationFileName>
-      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <IntelJCCErratum>false</IntelJCCErratum>
-      <BuildStlModules>false</BuildStlModules>
-      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
-      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
-      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
-      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;_UNICODE;UNICODE;;SFML_STATIC</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
-      <LinkCompiled>true</LinkCompiled>
-    </ClCompile>
+    <ClCompile Include="CityBuilder\Building.cpp"/>
     <ClCompile Include="CityBuilder\Environment.cpp" />
     <ClCompile Include="CityBuilder\Factory.cpp" />
     <ClCompile Include="CityBuilder\House.cpp" />

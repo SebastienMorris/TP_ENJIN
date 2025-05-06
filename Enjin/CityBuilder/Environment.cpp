@@ -19,16 +19,11 @@ Environment::~Environment()
 	delete bgShader;
 	if (useTmx)
 	{
-		//delete tmxOne;
 		delete tmxZero;
 		delete tmxMap;
 	}
 }
 
-
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
 
 
 void Environment::initBackground()
@@ -44,15 +39,13 @@ void Environment::initBackground()
 void Environment::initEnvironment()
 {
 	throw std::exception(); // Will not be implemented cause using tmx instead
-	//environment = new TileMap();
-	//environment->load();
 }
 
 void Environment::initTmxEnvironment()
 {
 	// Init Tmx Tilemap
 	tmxMap = new tmx::Map();
-	printf(tmxMap->load("Assets/ENJIN_TileMap.tmx") ? "true" : "false");
+	tmxMap->load("Assets/ENJIN_TileMap.tmx");
 	tmxZero = new MapLayer(*tmxMap, 0);
 	//tmxOne = new MapLayer(*tmxMap, 1);
 	
@@ -69,35 +62,23 @@ void Environment::initTmxEnvironment()
 }
 
 
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-
-
 
 void Environment::update(double dt)
 {
 	if (bgShader) bgShader->update(dt);
 	tmxZero->update(sf::seconds((float)dt));
-	//tmxOne->update(sf::seconds((float)dt));
 }
 
-
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
 
 
 void Environment::drawWorld(sf::RenderTarget& win)
 {
 	sf::RenderStates states = sf::RenderStates::Default;
-	//states.transform *= ScaleHelper::apply();
 	return;
 }
 
 void Environment::drawCamera(sf::RenderTarget& win)
 {
-	// Draw Background
 	sf::RenderStates states = sf::RenderStates::Default;
 	sf::Shader* sh = &bgShader->sh;
 	states.blendMode = sf::BlendAdd;
@@ -105,29 +86,15 @@ void Environment::drawCamera(sf::RenderTarget& win)
 	states.texture = &bgTexture;
 	sh->setUniform("texture", bgTexture);
 	win.draw(*bgHandle, states);
-
-	// Draw Environment, using Tmx or Custom Tilemap
 	if (useTmx)
 	{
 		win.draw(*tmxZero, sf::RenderStates::Default);
-		//win.draw(*tmxOne, sf::RenderStates::Default);
 	}
 }
 
 void Environment::imgui()
 {
 	using namespace ImGui;
-	//if (CollapsingHeader("World", ImGuiTreeNodeFlags_DefaultOpen)) {
-
-	//	// Draw Debug Walls
-	//	/*if (TreeNodeEx("Collisions")) {
-	//		for (sf::Vector2i& w : collisions) {
-	//			Value("x", w.x);
-	//			Value("y", w.y);
-	//		}
-	//		TreePop();
-	//	}*/
-	//}
 }
 
 bool Environment::isWater(int x, int y)
@@ -172,22 +139,3 @@ bool Environment::getWater(int x, int y)
 	mapCache.insert({ id, 0 });
 	return false;
 }
-
-
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////
-
-
-// Cache Walls to Graphics
-//void Environment::cacheWalls()
-//{
-//	wallSprites.clear();
-//	for (sf::Vector2i& w : walls) {
-//		sf::RectangleShape rect(sf::Vector2f(C::GRID_SIZE, C::GRID_SIZE));
-//		rect.setPosition((float)w.x * C::GRID_SIZE, (float)w.y * C::GRID_SIZE);
-//		//rect.setFillColor(sf::Color(0x07ff07ff));
-//		rect.setTexture(&wallTexture);
-//		wallSprites.push_back(rect);
-//	}
-//}
